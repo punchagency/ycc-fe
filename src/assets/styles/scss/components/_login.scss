@@ -1,0 +1,97 @@
+@use '../layout/variables' as vars;
+@use '../mixins/transition' as *;
+@use '../mixins/breakpoints' as bp;
+
+.login{
+  height: 100vh;
+  @include bp.bp(custome-991) {
+    height: auto;
+  }
+}
+
+.login-content {
+  max-width: 444px;
+  h2{
+    margin-bottom: 32px;
+    @include bp.bp(custome-991) {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.login-right-component {
+  max-width: 550px;
+  width: 100%;
+  @include bp.bp(mid-desktop3) {
+    max-width: 460px;
+  }
+  .logo-wraper {
+    margin-bottom: 48px;
+    @include bp.bp(custome-1440) {
+      margin-bottom: 38px;
+    }
+    @include bp.bp(custome-991) {
+      margin-bottom: 30px;
+    }
+    @include bp.bp(custome-568) {
+      margin-bottom: 8px;
+    }
+
+    .logo {
+      width: 180px;
+      display: block;
+      @include bp.bp(mid-desktop3) {
+        width: 130px;
+      }
+      @include bp.bp(phone-end) {
+        width: 100px;
+      }
+    }
+  }
+
+  .login-heading {
+    text-align: left;
+    margin-bottom: 38px;
+    @include bp.bp(custome-1440) {
+      margin-bottom: 28px;
+    }
+    @include bp.bp(custome-568) {
+      margin-bottom: 8px;
+    }
+  }
+
+  .login-form {
+    text-align: left;
+  }
+
+  .p-field-checkbox {
+    margin-bottom: 41px;
+    display: flex;
+    justify-content: space-between;
+    @include bp.bp(custome-568) {
+      flex-direction: column;
+      margin-bottom: 8px;
+    }
+    .p-d-flex{
+      @include bp.bp(custome-568) {
+        margin-bottom: 8px;
+      }
+    }
+    a {
+      font-size: 14px;
+    }
+  }
+}
+
+.login-right-component {
+  .p-field-checkbox{
+     &.signup-checkbox{
+      .p-d-flex{
+        @include bp.bp(custome-568) {
+          margin-bottom: 0;
+        }
+      }
+     }
+  }
+}
+

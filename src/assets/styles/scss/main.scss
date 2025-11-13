@@ -1,0 +1,21 @@
+//Layout Related
+@use "layout/variables";
+@use "layout/mixins";
+@use "layout/global";
+
+@use "components/get-started";
+@use "components/login";
+@use "components/left-menu";
+@use "components/notification";
+@use "components/header";
+@use "components/sub-header";
+@use "components/dashboard";
+@use "components/user";
+@use "components/vessel";
+@use "components/report";
+@use "components/maintenance";
+@use "components/document";
+@use "components/schedule-calender";
+@use "components/crewTask";
+@use "components/crewSettings";
+
