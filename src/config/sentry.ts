@@ -1,7 +1,7 @@
 // src/config/sentry.ts
 // Sentry Configuration (TypeScript Version)
 
-import type { Event, EventHint, SeverityLevel } from "@sentry/types";
+import type { ErrorEvent, EventHint, SeverityLevel } from "@sentry/types";
 import * as Sentry from "@sentry/react";
 
 interface SentryConfig {
@@ -11,7 +11,7 @@ interface SentryConfig {
   replaysSessionSampleRate: number;
   replaysOnErrorSampleRate: number;
   tracePropagationTargets: (string | RegExp)[];
-  beforeSend: (event: Event, hint?: EventHint) => Event | null;
+  beforeSend: (event: ErrorEvent, hint: EventHint) => ErrorEvent | null;
   initialScope: {
     tags: Record<string, string>;
   };
@@ -38,7 +38,7 @@ export const sentryConfig: SentryConfig = {
   ],
 
   // Filter and sanitize events before sending
-  beforeSend(event: Event): Event | null {
+  beforeSend(event: ErrorEvent): ErrorEvent | null {
     if (event.exception) {
       const errorMessage = event.exception.values?.[0]?.value;
 
