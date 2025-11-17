@@ -8,9 +8,9 @@ import { Loading } from "./components/Loading";
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 
 // main pages
-const Home = lazy(() => import("./pages/landing-page/home")) ;
+const Home = lazy(() => import("./pages/landing-page/home/home")) ;
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
-
+const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 
 const App: React.FC = () => {
   return (
@@ -23,6 +23,7 @@ const App: React.FC = () => {
             <Route element={<LandingPageLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/vendor-services" element={<VendorAndServices />} />
+              <Route path="/about-us" element={<AboutUs />} />
             </Route>
           </Routes>
         </main>

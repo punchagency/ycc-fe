@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import type { ReactNode } from "react";
-import banner from "../../assets/images/YCC-home-banner-new.png";
-import Section2Home from "../../components/home/section2-home";
-import Section3Home from "../../components/home/section3-home";
-import LandingPageFooter from "../../components/landing-page/landing-page-footer";
-import Section4Home from "../../components/home/section4-home";
-import LandingPageBanner from "../../components/landing-page/landing-page-banner";
-import Chatbot from "../../components/chatbot/chatbot";
-import { LandingPageAIProvider } from '../../context/AIAssistant/landingPageAIContext';
+import banner from "../../../assets/images/YCC-home-banner-new.png";
+import Section2Home from "./section2-home";
+import Section3Home from "./section3-home";
+import LandingPageFooter from "../../../components/landing-page/landing-page-footer";
+import Section4Home from "./section4-home";
+import LandingPageBanner from "../../../components/landing-page/landing-page-banner";
+import Chatbot from "../../../components/chatbot/chatbot";
+import { LandingPageAIProvider } from '../../../context/AIAssistant/landingPageAIContext';
 
 const HomeLandingPage: React.FC = () => {
   useEffect(() => {
