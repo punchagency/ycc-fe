@@ -45,7 +45,7 @@ const LandingPageChatbot = () => {
   const [typingState, setTypingState] = useState(false);
   const [message, setMessage] = useState("");
 
-  const chatContainerRef = useRef(null);
+  const chatContainerRef: React.RefObject<HTMLDivElement | null> = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +56,9 @@ const LandingPageChatbot = () => {
         const parsed = JSON.parse(storedUser);
         userId = parsed?.id || parsed?._id || null;
       }
-    } catch (_) {}
+    } catch {
+      userId = null;
+    }
 
     if (!userId) {
       let guestId = localStorage.getItem("guestSessionId");
