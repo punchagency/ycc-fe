@@ -5,10 +5,6 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import BotIcon from '../../assets/images/ai-chat.svg';
 import SendIcon from '../../assets/images/chatbot/send-icon.png';
@@ -16,7 +12,6 @@ import { CheckCheckIcon } from 'lucide-react';
 
 // Configuration constants
 const MESSAGES_PER_PAGE = 20;
-const INITIAL_MESSAGES_TO_SHOW = 10;
 const SCROLL_THRESHOLD = 100; // pixels from top to trigger load more
 
 // Type definitions
@@ -51,8 +46,6 @@ const VirtualizedMessageList: React.FC<VirtualizedMessageListProps> = ({
   isLoadingHistory = false,
   historyError = null,
   onLoadMoreMessages = null,
-  hasMoreMessages = false,
-  isLoadingMore = false,
   formatUtcTo12Hour,
   parseAIMessage,
   isMobile = false,
