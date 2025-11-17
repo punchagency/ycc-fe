@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
+
+import { Loading } from "./components/Loading";
+const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
+
 import * as Sentry from '@sentry/react';
 import Home from "./pages/landing-page/home";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -26,14 +31,30 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
-        <div className="flex flex-col min-h-screen">
-          <main className="grow">
-            <SentryRoutes>
+      <div className="flex flex-col min-h-screen">
+        {/* Navbar (always visible) */}
+        {/* <Navbar /> */}
+
+        {/* Main Content */}
+        <main className="grow">
+          <Routes>
+            <Route element={<LandingPageLayout />}>
               <Route path="/" element={<Home />} />
-            </SentryRoutes>
-          </main>
-        </div>
-      </Router>
+
+            </Route>
+            {/* Landing Page */}
+
+            
+            {/* Future routes can go here */}
+            {/* <Route path="/about" element={<About />} /> */}
+            {/* <Route path="/contact" element={<Contact />} /> */}
+          </Routes>
+        </main>
+
+        {/* Footer (always visible) */}
+        {/* <Footer /> */}
+      </div>
+    </Router>
     </ErrorBoundary>
   );
 };

@@ -26,7 +26,7 @@ const Section4Home: React.FC = () => {
 
             <div className="flex justify-start md:justify-center items-center">
               <Link to="/get-started">
-                <button 
+                <button
                   style={{background: 'linear-gradient(90deg, rgb(3, 77, 146), rgb(4, 135, 217))'}}
                   className="text-white text-[14px] font-semibold px-10 py-3 
                   rounded-md hover:opacity-90 transition duration-300 cursor-pointer">
