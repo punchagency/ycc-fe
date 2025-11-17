@@ -69,7 +69,7 @@ interface GradientTextProps {
 const GradientText: React.FC<GradientTextProps> = ({ children }) => {
   return (
     <span
-      className="bg-gradient-to-r from-white via-sky-400 to-sky-500 bg-clip-text text-transparent font-semibold font-['Plus_Jakarta_Sans'] 
+      className="bg-linear-to-r from-white via-sky-400 to-sky-500 bg-clip-text text-transparent font-semibold font-['Plus_Jakarta_Sans'] 
       text-[30px] sm:text-[35px] md:text-[40px] lg:text-[50px] 
       leading-[38px] sm:leading-[45px] md:leading-[52px] lg:leading-[60px]
       uppercase inline-block"

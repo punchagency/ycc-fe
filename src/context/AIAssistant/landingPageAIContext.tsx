@@ -5,7 +5,7 @@ import React, {
   useEffect,
 } from "react";
 import type { ReactNode, Dispatch, SetStateAction } from "react";
-import { getResponseFromAI } from "../../services/AIAssistant/landingPageAIService";
+// import { getResponseFromAI } from "../../services/AIAssistant/landingPageAIService";
 import socketService from "../../services/socket";
 
 // Define message type
@@ -44,6 +44,7 @@ interface LandingPageAIProviderProps {
 const LandingPageAIContext = createContext<LandingPageAIContextType | undefined>(undefined);
 
 // Hook to use context safely
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLandingPageAI = (): LandingPageAIContextType => {
   const context = useContext(LandingPageAIContext);
   if (!context) {
@@ -106,10 +107,11 @@ export const LandingPageAIProvider: React.FC<LandingPageAIProviderProps> = ({ ch
     return () => socketService.disconnect();
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getResponse = async (previousChatData: ChatData): Promise<void> => {
     try {
-      await getResponseFromAI(previousChatData);
-    } catch (error) {
+      // await getResponseFromAI(previousChatData);
+    } catch {
       setChatData((prev) => ({
         ...prev,
         messages: [

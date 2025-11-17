@@ -1,7 +1,7 @@
 import { io, Socket } from "socket.io-client";
 
 // Environment variable with fallback
-const SOCKET_URL: string = import.meta.env.REACT_APP_BACKEND_URL || "http://localhost:7000";
+const SOCKET_URL: string = import.meta.env.VITE_API_URL || "http://localhost:7000";
 
 // Define the structure of the data received from the AI
 interface AIResponseData {
