@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
-
-import { Loading } from "./components/Loading";
+import { lazy } from "react";
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 
 import * as Sentry from '@sentry/react';
@@ -11,12 +9,14 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import Session from "./utils/Session";
 import type { IUser } from "./types/auth.type";
+import { useReduxAuth } from "./hooks/useReduxAuth";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
 const App: React.FC = () => {
+  const { isAuthenticated, user } = useReduxAuth();
   useEffect(() => {
-    if (import.meta.env.MODE) {
+    if (import.meta.env.PROD) {
       const user: IUser = Session.get('user');
       if (user?._id && user?.email) {
         setSentryUser({
@@ -31,32 +31,35 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
-      <div className="flex flex-col min-h-screen">
-        {/* Navbar (always visible) */}
-        {/* <Navbar /> */}
-
-        {/* Main Content */}
-        <main className="grow">
-          <Routes>
-            <Route element={<LandingPageLayout />}>
-              <Route path="/" element={<Home />} />
-
-            </Route>
-            {/* Landing Page */}
-
-            
-            {/* Future routes can go here */}
+        <SentryRoutes>
+          {/* Unauthenticated routes - always accessible */}
+          <Route element={<LandingPageLayout />}>
+            <Route path="/" element={<Home />} />
+            {/* Future public routes can go here */}
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/contact" element={<Contact />} /> */}
-          </Routes>
-        </main>
-
-        {/* Footer (always visible) */}
-        {/* <Footer /> */}
-      </div>
-    </Router>
+          </Route>
+          
+          {/* Authenticated routes based on user role */}
+          {isAuthenticated && user?.role === 'user' && (
+            <Route path="/dashboard" element={<Home />} />
+          )}
+          {isAuthenticated && user?.role === 'distributor' && (
+            <Route path="/distributor" element={<Home />} />
+          )}
+          {isAuthenticated && user?.role === 'manufacturer' && (
+            <Route path="/manufacturer" element={<Home />} />
+          )}
+          {isAuthenticated && user?.role === 'admin' && (
+            <Route path="/admin" element={<Home />} />
+          )}
+        </SentryRoutes>
+      </Router>
     </ErrorBoundary>
   );
 };
 
-export default Sentry.withProfiler(App);
+const AppWithProfiler = Sentry.withProfiler(App);
+AppWithProfiler.displayName = 'App';
+
+export default AppWithProfiler;

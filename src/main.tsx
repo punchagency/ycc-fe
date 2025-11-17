@@ -20,7 +20,7 @@ if (import.meta.env.PROD && sentryConfig.dsn) {
       Sentry.replayIntegration(),
     ],
     tracePropagationTargets: sentryConfig.tracePropagationTargets,
-    // beforeSend: sentryConfig.beforeSend,
+    beforeSend: sentryConfig.beforeSend,
   });
 }
 
