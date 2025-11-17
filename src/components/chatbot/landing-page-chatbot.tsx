@@ -44,9 +44,6 @@ const LandingPageChatbot: React.FC = () => {
     }
   }, []);
 
-
-  const chatContainerRef: React.RefObject<HTMLDivElement | null> = useRef(null);
-  const scrollTimeoutRef = useRef(null);
   useEffect(() => {
     scrollToBottom();
   }, [messages, typing, scrollToBottom]);
@@ -61,9 +58,7 @@ const LandingPageChatbot: React.FC = () => {
         const parsed = JSON.parse(stored);
         userId = parsed?.id || parsed?._id || null;
       }
-    } catch {
-      userId = null;
-    }
+    } catch {}
 
     if (!userId) {
       userId = localStorage.getItem("guestSessionId");
