@@ -3,9 +3,8 @@ import React, {
   useContext,
   useState,
   useEffect,
-  ReactNode,
-  FC,
 } from "react";
+import type { ReactNode, FC } from "react";
 import {
   updateUserContext,
   clearUserContext,

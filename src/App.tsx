@@ -1,7 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 
-// Import pages
+import { Loading } from "./components/Loading";
+const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
+
 import Home from "./pages/landing-page/home";
 
 // Import layout components (optional)
@@ -18,9 +21,13 @@ const App: React.FC = () => {
         {/* Main Content */}
         <main className="flex-grow">
           <Routes>
-            {/* Landing Page */}
-            <Route path="/" element={<Home />} />
+            <Route element={<LandingPageLayout />}>
+              <Route path="/" element={<Home />} />
 
+            </Route>
+            {/* Landing Page */}
+
+            
             {/* Future routes can go here */}
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/contact" element={<Contact />} /> */}
