@@ -41,7 +41,7 @@ const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
 
   const navItems: NavItem[] = [
     { title: "Home", link: "/" },
-    { title: "Vendor & Services", link: "/vendor-services-services" },
+    { title: "Vendor & Services", link: "/vendor-services" },
     { title: "About Us", link: "/about-us" },
     { title: "Resource Center", link: "/resource-center" },
     { title: "Contact", link: "/contact-us" },
