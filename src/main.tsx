@@ -14,15 +14,6 @@ import './index.css';
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </StrictMode>
-);
-
 
 if (import.meta.env.PROD && sentryConfig.dsn) {
   Sentry.init({
@@ -44,8 +35,11 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
       </PersistGate>
     </Provider>
-  </StrictMode>,
-)
+  </StrictMode>
+);

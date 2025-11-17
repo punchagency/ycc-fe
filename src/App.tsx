@@ -1,20 +1,15 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { lazy } from "react";
-const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
-
+import React, { Suspense, useEffect } from "react";
+import { BrowserRouter as Router, Routes } from "react-router-dom";
 import * as Sentry from '@sentry/react';
-import Home from "./pages/landing-page/home";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import Session from "./utils/Session";
 import type { IUser } from "./types/auth.type";
-import { useReduxAuth } from "./hooks/useReduxAuth";
+import AppRoutes from "./routes";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
 const App: React.FC = () => {
-  const { isAuthenticated, user } = useReduxAuth();
   useEffect(() => {
     if (import.meta.env.PROD) {
       const user: IUser = Session.get('user');
@@ -31,29 +26,9 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
-        <SentryRoutes>
-          {/* Unauthenticated routes - always accessible */}
-          <Route element={<LandingPageLayout />}>
-            <Route path="/" element={<Home />} />
-            {/* Future public routes can go here */}
-            {/* <Route path="/about" element={<About />} /> */}
-            {/* <Route path="/contact" element={<Contact />} /> */}
-          </Route>
-          
-          {/* Authenticated routes based on user role */}
-          {isAuthenticated && user?.role === 'user' && (
-            <Route path="/dashboard" element={<Home />} />
-          )}
-          {isAuthenticated && user?.role === 'distributor' && (
-            <Route path="/distributor" element={<Home />} />
-          )}
-          {isAuthenticated && user?.role === 'manufacturer' && (
-            <Route path="/manufacturer" element={<Home />} />
-          )}
-          {isAuthenticated && user?.role === 'admin' && (
-            <Route path="/admin" element={<Home />} />
-          )}
-        </SentryRoutes>
+        <Suspense fallback={<div className="p-8 text-center text-white">Loading...</div>}>
+          <AppRoutes RoutesComponent={SentryRoutes} />
+        </Suspense>
       </Router>
     </ErrorBoundary>
   );
