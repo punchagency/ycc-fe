@@ -14,7 +14,6 @@ import {
   ChevronDown,
   Menu as MenuIcon,
   ArrowLeft,
-  ChevronUp,
 } from "lucide-react";
 
 interface NavOption {
