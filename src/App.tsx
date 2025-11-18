@@ -7,8 +7,9 @@ import Session from './utils/Session';
 import type { IUser } from './types/auth.type';
 import AppRoutes from './routes';
 
-// Lazy loaded components from origin/main
+// Lazy loaded components (merged both sides)
 const LandingPageLayout = lazy(() => import('./layout/landing-page-layout'));
+
 const Home = lazy(() => import('./pages/landing-page/home/home'));
 const VendorAndServices = lazy(
   () => import('./pages/landing-page/vendorservices/vendor-services')
@@ -39,19 +40,19 @@ const App: React.FC = () => {
             <div className='p-8 text-center text-white'>Loading...</div>
           }
         >
-          {/* Your branch's AppRoutes */}
+          {/* Your branch's routing system */}
           <AppRoutes RoutesComponent={SentryRoutes} />
 
-          {/* origin/main lazy-loaded landing pages */}
+          {/* Landing page routes from origin/main */}
           <SentryRoutes>
-            {/* Unauthenticated routes - always accessible */}
+            {/* Public routes */}
             <Route element={<LandingPageLayout />}>
               <Route path='/' element={<Home />} />
               <Route path='/vendor-services' element={<VendorAndServices />} />
               <Route path='/about-us' element={<AboutUs />} />
             </Route>
 
-            {/* Authenticated routes based on user role */}
+            {/* Authenticated role-based routes */}
             {isAuthenticated && user?.role === 'user' && (
               <Route path='/dashboard' element={<Home />} />
             )}

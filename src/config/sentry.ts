@@ -1,6 +1,3 @@
-// src/config/sentry.ts
-// Sentry Configuration (TypeScript Version)
-
 import type { ErrorEvent, EventHint, SeverityLevel } from "@sentry/types";
 import * as Sentry from "@sentry/react";
 
