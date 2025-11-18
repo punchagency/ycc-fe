@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy } from "react";
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
+const Home = lazy(() => import("./pages/landing-page/home"));
 
 // main pages
 const Home = lazy(() => import("./pages/landing-page/home/home")) ;
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 import * as Sentry from '@sentry/react';
+
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import Session from "./utils/Session";
@@ -47,16 +49,17 @@ const App: React.FC = () => {
           
           {/* Authenticated routes based on user role */}
           {isAuthenticated && user?.role === 'user' && (
-            <Route path="/dashboard" element={<Home />} />
+            <Route path="/" element={<Home />} />
           )}
           {isAuthenticated && user?.role === 'distributor' && (
-            <Route path="/distributor" element={<Home />} />
+            <Route path="/" element={<Home />} />
           )}
           {isAuthenticated && user?.role === 'manufacturer' && (
-            <Route path="/manufacturer" element={<Home />} />
+            <Route path="/" element={<Home />} />
           )}
           {isAuthenticated && user?.role === 'admin' && (
             <Route path="/admin" element={<Home />} />
+
           )}
         </SentryRoutes>
       </Router>
