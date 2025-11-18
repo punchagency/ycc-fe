@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import type { ReactNode } from "react";
 import banner from "../../../assets/images/YCC-home-banner-new.png";
@@ -18,29 +19,30 @@ const HomeLandingPage: React.FC = () => {
 
   const header = (
     <>
-      Your Destination for Crew <GradientText>resources</GradientText> &{" "}
+      Your Destination for Crew <GradientText>resources</GradientText> &{' '}
       <GradientText>Vessel</GradientText> Management
     </>
   );
 
   const subtext1 =
-    "Find local service providers and order your department supplies through our AI-supported Global Network. No matter the ask or the time, Yacht Crew Center is here to help you succeed.";
+    'Find local service providers and order your department supplies through our AI-supported Global Network. No matter the ask or the time, Yacht Crew Center is here to help you succeed.';
   const subtext2 =
-    "Welcome to Yacht Crew Center, LLC — the trusted hub for Yachting professionals worldwide. Founded by yacht crew for yacht crew, our platform combines industry expertise, personalized support, and global reach to empower your career and simplify vessel management. Whatever your position, Yacht Crew Center is here to help you succeed on and off the water.";
+    'Welcome to Yacht Crew Center, LLC — the trusted hub for Yachting professionals worldwide. Founded by yacht crew for yacht crew, our platform combines industry expertise, personalized support, and global reach to empower your career and simplify vessel management. Whatever your position, Yacht Crew Center is here to help you succeed on and off the water.';
 
   const button1 = {
-    text: "About Yacht Crew Center",
-    path: "/about-us",
+    text: 'Sign in',
+    path: '/login',
   };
   const button2 = {
-    text: "Onboard Vendors & Services",
-    path: "/vendor-services",
+    text: 'Join now',
+    path: '/get-started',
   };
 
-  const page = "home";
+  const page = 'home';
 
   return (
-    <div className="flex flex-col gap-[47px] sm:gap-[60px] md:gap-[90px] lg:gap-[120px] max-w-screen ">
+
+    <div className='flex flex-col gap-[47px] sm:gap-[60px] md:gap-[90px] lg:gap-[120px] max-w-screen mb-[45px] sm:mb-[23px] md:mb-[30px]'>
       <LandingPageBanner
         backgroundImage={backgroundImage}
         header={header}
