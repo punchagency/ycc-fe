@@ -50,7 +50,7 @@ const Section5AboutUs: React.FC = () => {
                   className="relative overflow-hidden rounded-md bg-gradient-to-r from-[#034D92] to-[#0487D9]
                              px-6 py-3 text-white font-semibold text-lg tracking-wide
                              transition-all duration-300 hover:shadow-2xl hover:-translate-y-1
-                             group"
+                             group cursor-pointer"
                 >
                   <span className="relative z-10">Join Our Crew Network</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#0487D9] to-[#034D92] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

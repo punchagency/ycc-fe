@@ -7,6 +7,10 @@ const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 const Home = lazy(() => import("./pages/landing-page/home/home")) ;
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
+const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
+const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
+
+
 import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
@@ -40,9 +44,8 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/vendor-services" element={<VendorAndServices />} />
             <Route path="/about-us" element={<AboutUs />} />
-            {/* Future public routes can go here */}
-            {/* <Route path="/about" element={<About />} /> */}
-            {/* <Route path="/contact" element={<Contact />} /> */}
+            <Route path="/resource-center" element={<ResourceCenter />} />
+            <Route path="/contact-us" element={<ContactUs />} />
           </Route>
           
           {/* Authenticated routes based on user role */}

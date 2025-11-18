@@ -47,7 +47,7 @@ const Chatbot: React.FC<ChatbotProps> = (props) => {
   } = useLandingPageAI();
 
   const chatContainerRef = useRef<HTMLElement | null>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollTimeoutRef = useRef<number | null>(null);
   const [minimized, setMinimized] = useState(false);
 
   // Robust scroll to bottom function

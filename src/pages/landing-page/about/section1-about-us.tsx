@@ -4,7 +4,7 @@ import collage from "../../../assets/images/about-us/section1.png";
 
 const Section1AboutUs: React.FC = () => {
   return (
-    <section className="w-full py-16 md:py-20 lg:py-28 bg-white">
+    <section className="w-full py-16 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16 items-center">
           {/* Image - Left Side */}

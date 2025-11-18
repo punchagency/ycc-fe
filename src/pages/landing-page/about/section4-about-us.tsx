@@ -31,10 +31,10 @@ const Section4AboutUs: React.FC = () => {
   ];
 
   return (
-    <section className="w-full py-16 md:py-20 lg:py-28 bg-gradient-to-b from-white to-gray-50">
+    <section className="w-full py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
         {/* Section Title */}
-        <h2 className="text-center text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight tracking-tight text-black font-['Plus_Jakarta_Sans'] mb-16 md:mb-20">
+        <h2 className="text-left text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight tracking-tight text-black font-['Plus_Jakarta_Sans'] mb-16 md:mb-20">
           Why Yacht Crew Center
         </h2>
 
