@@ -52,9 +52,6 @@ const App: React.FC = () => {
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/contact" element={<Contact />} /> */}
           </Route>
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<UserDashboard />} />
-          </Route>
 
           {/* Authenticated routes with sidebar layout */}
           {/* Authenticated routes based on user role */}
