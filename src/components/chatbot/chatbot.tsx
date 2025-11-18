@@ -25,12 +25,12 @@ interface ChatbotProps {
   [key: string]: any;
 }
 
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: string;
-}
+// interface Message {
+//   id: string;
+//   text: string;
+//   sender: 'user' | 'bot';
+//   timestamp: string;
+// }
 
 const Chatbot: React.FC<ChatbotProps> = (props) => {
   const { isAIAssistantOpen: _, ...rest } = props;

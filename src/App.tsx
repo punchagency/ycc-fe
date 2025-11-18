@@ -4,6 +4,10 @@ import { lazy } from "react";
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 const Home = lazy(() => import("./pages/landing-page/home"));
 
+// main pages
+const Home = lazy(() => import("./pages/landing-page/home/home")) ;
+const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
+const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 import * as Sentry from '@sentry/react';
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -36,6 +40,8 @@ const App: React.FC = () => {
           {/* Unauthenticated routes - always accessible */}
           <Route element={<LandingPageLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/vendor-services" element={<VendorAndServices />} />
+            <Route path="/about-us" element={<AboutUs />} />
             {/* Future public routes can go here */}
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/contact" element={<Contact />} /> */}

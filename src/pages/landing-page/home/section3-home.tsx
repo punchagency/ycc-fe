@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import SectionImage from "../../assets/images/home-section3-image.png";
+import SectionImage from "../../../assets/images/home-section3-image.png";
 
 const Section3Home: React.FC = () => {
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import yatch from "../../assets/images/YCC-yatch.png";
-import banner from "../../assets/images/water-wide.png";
+import yatch from "../../../assets/images/YCC-yatch.png";
+import banner from "../../../assets/images/water-wide.png";
 
 const Section4Home: React.FC = () => {
   return (
