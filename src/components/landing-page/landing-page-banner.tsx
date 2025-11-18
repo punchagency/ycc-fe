@@ -16,8 +16,7 @@ interface LandingPageBannerProps {
   button2?: ButtonProps;
 }
 
-const linearGradient =
-  "linear-gradient(90deg, #0499E0 0%, #06C6D9 50%, #0487D9 100%)";
+const linearGradient = "linear-gradient(90deg, #034D92, #0487D9)";
 
 const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
   page,
@@ -97,27 +96,29 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
             className="flex flex-col sm:flex-col md:flex-row gap-3 md:gap-[15px] 
             justify-center md:justify-start items-center w-full md:w-"
           >
-            <button
-              type="button"
-              onClick={() => navigate(button1.path)}
-              className="flex items-center w-full max-w-[240px] justify-center
-              min-w-[200px] sm:min-w-[240px] py-2.5 px-3 md:py-3 md:px-3.5
-              text-white font-inter font-medium text-sm md:text-base text-center align-middle
-              rounded-lg transition-all duration-300 ease-in-out
-              hover:scale-105 hover:shadow-lg cursor-pointer"
-              style={{
-                background: linearGradient,
-              }}
+            <Link
+              to={button1.path}
+              className="flex items-center w-full max-w-[240px]"
             >
-              {button1.text}
-            </button>
+              <button
+                className="flex items-center w-full max-w-[240px] justify-center min-w-[200px] sm:min-w-[240px] py-2.5 px-3 md:py-3 md:px-3.5
+                text-white font-inter font-medium text-lg md:text-base text-center align-middle
+                rounded-md transition-all duration-300 ease-in-out
+                hover:translate-y-[-3px] hover:shadow-[0_4px_12px_1px_rgba(4, 135, 217, 0.3)] cursor-pointer"
+                style={{
+                  background: linearGradient,
+                }}
+              >
+                {button1.text}
+              </button>
+            </Link>
 
             {button2 && (
               <button
                 type="button"
                 onClick={() => navigate(button2.path)}
                 className="relative group w-full sm:w-[240px] md:w-auto max-w-[240px] md:max-w-none
-                overflow-hidden border-none rounded-lg bg-transparent
+                overflow-hidden border-none rounded-md bg-transparent
                 text-white font-inter font-medium text-sm md:text-base
                 py-2.5 px-3 md:py-3 md:px-3.5 text-center transition-all duration-300 ease-in-out
                 hover:-translate-y-0.5 cursor-pointer"
