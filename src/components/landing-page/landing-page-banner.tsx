@@ -16,8 +16,7 @@ interface LandingPageBannerProps {
   button2?: ButtonProps;
 }
 
-const linearGradient =
-  "linear-gradient(90deg, #0499E0 0%, #06C6D9 50%, #0487D9 100%)";
+const linearGradient = "linear-gradient(90deg, #034D92, #0487D9)";
 
 const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
   page,
@@ -101,9 +100,9 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
             >
               <button
                 className="w-full min-w-[200px] sm:min-w-[240px] py-2.5 px-3 md:py-3 md:px-3.5
-                text-white font-inter font-medium text-sm md:text-base text-center align-middle
-                rounded-lg transition-all duration-300 ease-in-out
-                hover:scale-105 hover:shadow-lg cursor-pointer"
+                text-white font-inter font-medium text-lg md:text-base text-center align-middle
+                rounded-md transition-all duration-300 ease-in-out
+                hover:translate-y-[-3px] hover:shadow-[0_4px_12px_1px_rgba(4, 135, 217, 0.3)] cursor-pointer"
                 style={{
                   background: linearGradient,
                 }}
@@ -118,7 +117,7 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
                 className="relative group w-full sm:w-[240px] md:w-auto max-w-[240px] md:max-w-none"
               >
                 <button
-                  className="relative overflow-hidden border-none rounded-lg bg-transparent
+                  className="relative overflow-hidden border-none rounded-md bg-transparent
                   text-white font-inter font-medium text-sm md:text-base
                   py-2.5 px-3 md:py-3 md:px-3.5 text-center transition-all duration-300 ease-in-out
                   w-full hover:-translate-y-0.5 cursor-pointer"

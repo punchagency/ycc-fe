@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { lazy } from "react";
-const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
-const Home = lazy(() => import("./pages/landing-page/home"));
+import * as Sentry from '@sentry/react';
+import { Toaster } from "./components/ui/sonner";
 
 // main pages
-const Home = lazy(() => import("./pages/landing-page/home/home")) ;
+const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
+const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
+const Home = lazy(() => import("./pages/landing-page/home/home"));
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
-import * as Sentry from '@sentry/react';
+
+const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const DistributorDashboard = lazy(() => import("./pages/distributor/DistributorDashboard"));
+const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/ManufacturerDashboard"));
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
@@ -27,7 +32,7 @@ const App: React.FC = () => {
         setSentryUser({
           id: user._id,
           email: user.email,
-          username: user.firstName,
+          username: `${user.firstName} ${user.lastName}`,
         });
       }
     }
@@ -36,6 +41,7 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
+        <Toaster richColors={true} />
         <SentryRoutes>
           {/* Unauthenticated routes - always accessible */}
           <Route element={<LandingPageLayout />}>
@@ -46,19 +52,31 @@ const App: React.FC = () => {
             {/* <Route path="/about" element={<About />} /> */}
             {/* <Route path="/contact" element={<Contact />} /> */}
           </Route>
-          
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<UserDashboard />} />
+          </Route>
+
+          {/* Authenticated routes with sidebar layout */}
           {/* Authenticated routes based on user role */}
           {isAuthenticated && user?.role === 'user' && (
-            <Route path="/" element={<Home />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<UserDashboard />} />
+            </Route>
           )}
           {isAuthenticated && user?.role === 'distributor' && (
-            <Route path="/" element={<Home />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<DistributorDashboard />} />
+            </Route>
           )}
           {isAuthenticated && user?.role === 'manufacturer' && (
-            <Route path="/" element={<Home />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<ManufacturerDashboard />} />
+            </Route>
           )}
           {isAuthenticated && user?.role === 'admin' && (
-            <Route path="/admin" element={<Home />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<AdminDashboard />} />
+            </Route>
 
           )}
         </SentryRoutes>
