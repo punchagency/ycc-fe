@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { lazy } from "react";
-const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
+import * as Sentry from '@sentry/react';
+import { Toaster } from "./components/ui/sonner";
 
 // main pages
-const Home = lazy(() => import("./pages/landing-page/home/home")) ;
+const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
+const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
+const Home = lazy(() => import("./pages/landing-page/home/home"));
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
@@ -12,28 +14,31 @@ const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/r
 
 
 import * as Sentry from '@sentry/react';
+
+const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const DistributorDashboard = lazy(() => import("./pages/distributor/DistributorDashboard"));
+const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/ManufacturerDashboard"));
+
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
-import Session from "./utils/Session";
-import type { IUser } from "./types/auth.type";
 import { useReduxAuth } from "./hooks/useReduxAuth";
+import { Loading } from "./components/Loading";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
 const App: React.FC = () => {
-  const { isAuthenticated, user } = useReduxAuth();
+  const { user, isAuthenticated } = useReduxAuth();
+
   useEffect(() => {
-    if (import.meta.env.PROD) {
-      const user: IUser = Session.get('user');
-      if (user?._id && user?.email) {
-        setSentryUser({
-          id: user._id,
-          email: user.email,
-          username: user.firstName,
-        });
-      }
+    if (import.meta.env.PROD && user?._id && user?.email) {
+      setSentryUser({
+        id: user._id,
+        email: user.email,
+        username: `${user.firstName} ${user.lastName}`,
+      });
     }
-  }, []);
+  }, [user]);
 
   return (
     <ErrorBoundary>

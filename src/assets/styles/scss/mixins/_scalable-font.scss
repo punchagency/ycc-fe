@@ -1,3 +1,0 @@
-@mixin fs($minsize, $maxsize) {
-    font-size: calc(#{$minsize}px + (#{$maxsize} - #{$minsize}) * ((100vw - 300px) / (1920 - 300)));
-}
