@@ -1,11 +1,11 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import Home from '../pages/landing-page/home';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Home from '../pages/landing-page/home/home';
 import SignInPage from '../pages/auth/sign-in';
 import RegisterPage from '../pages/auth/register';
+import UserDashboardLayout from '../layout/user-dashboard-layout';
+import UserDashboardHome from '../pages/dashboard/user-dashboard-home';
 import { useReduxAuth } from '../hooks/useReduxAuth';
-
-const LandingPageLayout = React.lazy(() => import('../layout/landing-page-layout'));
 
 type AppRoutesProps = {
   RoutesComponent: React.ComponentType<React.ComponentProps<typeof Routes>>;
@@ -13,30 +13,63 @@ type AppRoutesProps = {
 
 const AppRoutes: React.FC<AppRoutesProps> = ({ RoutesComponent }) => {
   const { isAuthenticated, user } = useReduxAuth();
+  const userRole = user?.role ?? null;
+
+  const roleHome: Record<string, string> = {
+    user: '/dashboard',
+    distributor: '/distributor',
+    manufacturer: '/manufacturer',
+    admin: '/admin',
+  };
+
+  const authenticatedHome = roleHome[userRole ?? ''] ?? '/dashboard';
 
   return (
     <RoutesComponent>
-      <Route element={<LandingPageLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Route>
+      <Route path='/' element={<Home />} />
 
-      {isAuthenticated && user?.role === 'user' && (
-        <Route path="/dashboard" element={<Home />} />
+      {!isAuthenticated ? (
+        <>
+          <Route path='/login' element={<SignInPage />} />
+          <Route path='/get-started' element={<RegisterPage />} />
+        </>
+      ) : (
+        <>
+          <Route
+            path='/login'
+            element={<Navigate to={authenticatedHome} replace />}
+          />
+          <Route
+            path='/get-started'
+            element={<Navigate to={authenticatedHome} replace />}
+          />
+        </>
       )}
-      {isAuthenticated && user?.role === 'distributor' && (
-        <Route path="/distributor" element={<Home />} />
+
+      {isAuthenticated && userRole === 'user' && (
+        <Route element={<UserDashboardLayout />}>
+          <Route path='/dashboard' element={<UserDashboardHome />} />
+        </Route>
       )}
-      {isAuthenticated && user?.role === 'manufacturer' && (
-        <Route path="/manufacturer" element={<Home />} />
+
+      {isAuthenticated && userRole === 'distributor' && (
+        <Route path='/distributor' element={<Home />} />
       )}
-      {isAuthenticated && user?.role === 'admin' && (
-        <Route path="/admin" element={<Home />} />
+      {isAuthenticated && userRole === 'manufacturer' && (
+        <Route path='/manufacturer' element={<Home />} />
       )}
+      {isAuthenticated && userRole === 'admin' && (
+        <Route path='/admin' element={<Home />} />
+      )}
+
+      <Route
+        path='*'
+        element={
+          <Navigate to={isAuthenticated ? authenticatedHome : '/'} replace />
+        }
+      />
     </RoutesComponent>
   );
 };
 
 export default AppRoutes;
-

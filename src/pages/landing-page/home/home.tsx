@@ -31,11 +31,11 @@ const HomeLandingPage: React.FC = () => {
 
   const button1 = {
     text: 'Sign in',
-    path: '/sign-in',
+    path: '/login',
   };
   const button2 = {
     text: 'Join now',
-    path: '/register',
+    path: '/get-started',
   };
 
   const page = 'home';
