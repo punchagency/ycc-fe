@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface ButtonProps {
   text: string;
@@ -27,6 +27,8 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
   button1,
   button2,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <section
       className="relative w-full h-screen min-h-[600px] md:min-h-[700px] max-h-screen overflow-hidden bg-cover bg-center"
@@ -99,7 +101,7 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
               className="flex items-center w-full max-w-[240px]"
             >
               <button
-                className="w-full min-w-[200px] sm:min-w-[240px] py-2.5 px-3 md:py-3 md:px-3.5
+                className="flex items-center w-full max-w-[240px] justify-center min-w-[200px] sm:min-w-[240px] py-2.5 px-3 md:py-3 md:px-3.5
                 text-white font-inter font-medium text-lg md:text-base text-center align-middle
                 rounded-md transition-all duration-300 ease-in-out
                 hover:translate-y-[-3px] hover:shadow-[0_4px_12px_1px_rgba(4, 135, 217, 0.3)] cursor-pointer"
@@ -112,37 +114,35 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
             </Link>
 
             {button2 && (
-              <Link
-                to={button2.path}
-                className="relative group w-full sm:w-[240px] md:w-auto max-w-[240px] md:max-w-none"
+              <button
+                type="button"
+                onClick={() => navigate(button2.path)}
+                className="relative group w-full sm:w-[240px] md:w-auto max-w-[240px] md:max-w-none
+                overflow-hidden border-none rounded-md bg-transparent
+                text-white font-inter font-medium text-sm md:text-base
+                py-2.5 px-3 md:py-3 md:px-3.5 text-center transition-all duration-300 ease-in-out
+                hover:-translate-y-0.5 cursor-pointer"
               >
-                <button
-                  className="relative overflow-hidden border-none rounded-md bg-transparent
-                  text-white font-inter font-medium text-sm md:text-base
-                  py-2.5 px-3 md:py-3 md:px-3.5 text-center transition-all duration-300 ease-in-out
-                  w-full hover:-translate-y-0.5 cursor-pointer"
-                >
-                  <span className="relative z-10 transition-colors duration-300 group-hover:text-[#0487D9]">
-                    {button2.text}
-                  </span>
-                  
-                  {/* Gradient border */}
-                  <span
-                    className="absolute inset-0 p-[2px] rounded-lg transition-all duration-300 
-                    group-hover:opacity-70 group-hover:rotate-[3deg] group-hover:scale-105"
-                    style={{
-                      background: linearGradient,
-                      WebkitMask:
-                        "linear-gradient(white, white) content-box, linear-gradient(white, white)",
-                      WebkitMaskComposite: "destination-out",
-                      maskComposite: "exclude",
-                    }}
-                  />
-                  
-                  {/* Hover background effect */}
-                  <span className="absolute inset-0 bg-white/10 -translate-x-full transition-transform duration-300 group-hover:translate-x-0" />
-                </button>
-              </Link>
+                <span className="relative z-10 transition-colors duration-300 group-hover:text-[#0487D9]">
+                  {button2.text}
+                </span>
+                
+                {/* Gradient border */}
+                <span
+                  className="absolute inset-0 p-[2px] rounded-lg transition-all duration-300 
+                  group-hover:opacity-70 group-hover:rotate-3 group-hover:scale-105"
+                  style={{
+                    background: linearGradient,
+                    WebkitMask:
+                      "linear-gradient(white, white) content-box, linear-gradient(white, white)",
+                    WebkitMaskComposite: "destination-out",
+                    maskComposite: "exclude",
+                  }}
+                />
+                
+                {/* Hover background effect */}
+                <span className="absolute inset-0 bg-white/10 -translate-x-full transition-transform duration-300 group-hover:translate-x-0" />
+              </button>
             )}
           </div>
         )}
