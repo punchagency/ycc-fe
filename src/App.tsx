@@ -9,6 +9,11 @@ const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
 const Home = lazy(() => import("./pages/landing-page/home/home"));
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
+const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
+const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
+
+
+import * as Sentry from '@sentry/react';
 
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -38,46 +43,30 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
-        <Suspense
-          fallback={<Loading />}
-        >
-          <SentryRoutes>
-            {/* Unauthenticated routes - always accessible */}
-            <Route element={<LandingPageLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/vendor-services" element={<VendorAndServices />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              {/* Future public routes can go here */}
-              {/* <Route path="/about" element={<About />} /> */}
-              {/* <Route path="/contact" element={<Contact />} /> */}
-            </Route>
-
-            {/* Authenticated routes with sidebar layout */}
-            {/* Authenticated routes based on user role */}
-            {isAuthenticated && user?.role === 'user' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<UserDashboard />} />
-              </Route>
-            )}
-            {isAuthenticated && user?.role === 'distributor' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<DistributorDashboard />} />
-              </Route>
-            )}
-            {isAuthenticated && user?.role === 'manufacturer' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<ManufacturerDashboard />} />
-              </Route>
-            )}
-            {isAuthenticated && user?.role === 'admin' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<AdminDashboard />} />
-              </Route>
-
-            )}
-          </SentryRoutes>
-        </Suspense>
-        <Toaster richColors={true} />
+        <SentryRoutes>
+          {/* Unauthenticated routes - always accessible */}
+          <Route element={<LandingPageLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/vendor-services" element={<VendorAndServices />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/resource-center" element={<ResourceCenter />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+          </Route>
+          
+          {/* Authenticated routes based on user role */}
+          {isAuthenticated && user?.role === 'user' && (
+            <Route path="/dashboard" element={<Home />} />
+          )}
+          {isAuthenticated && user?.role === 'distributor' && (
+            <Route path="/distributor" element={<Home />} />
+          )}
+          {isAuthenticated && user?.role === 'manufacturer' && (
+            <Route path="/manufacturer" element={<Home />} />
+          )}
+          {isAuthenticated && user?.role === 'admin' && (
+            <Route path="/admin" element={<Home />} />
+          )}
+        </SentryRoutes>
       </Router>
     </ErrorBoundary>
   );
