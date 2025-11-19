@@ -8,6 +8,7 @@ const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
 const SignInPage = lazy(() => import("./pages/auth/sign-in"));
 const RegisterPage = lazy(() => import("./pages/auth/register"));
+const Logout = lazy(() => import("./pages/auth/logout"));
 
 const Home = lazy(() => import("./pages/landing-page/home/home"));
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
@@ -32,11 +33,15 @@ const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/Manufactur
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import { useReduxAuth } from "./hooks/useReduxAuth";
+import { useAuth } from "./hooks/useAuth";
 import { Loading } from "./components/ui/Loading";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
 const App: React.FC = () => {
+  // Initialize auth state by fetching profile on app load
+  useAuth();
+
   const { user, isAuthenticated } = useReduxAuth();
 
   useEffect(() => {
@@ -72,6 +77,7 @@ const App: React.FC = () => {
               <Route path="/captain" element={<CaptainLandingPage />} />
               <Route path="/chef-gallery" element={<ChefGalleryLandingPage />} />
               <Route path='/login' element={<SignInPage />} />
+              <Route path='/logout' element={<Logout />} />
               <Route path='/get-started' element={<RegisterPage />} />
             </Route>
     
