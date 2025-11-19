@@ -11,8 +11,6 @@ const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 const SignInPage = lazy(() => import("./pages/auth/sign-in"));
 const RegisterPage = lazy(() => import("./pages/auth/register"));
-const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
-const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
 
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -62,25 +60,31 @@ const App: React.FC = () => {
             </Route>
 
             {/* Authenticated routes with sidebar layout */}
-              <Route path="/resource-center" element={<ResourceCenter />} />
-              <Route path="/contact-us" element={<ContactUs />} />
-            </Route>
-            
             {/* Authenticated routes based on user role */}
             {isAuthenticated && user?.role === 'user' && (
-              <Route path="/dashboard" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<UserDashboard />} />
+              </Route>
             )}
             {isAuthenticated && user?.role === 'distributor' && (
-              <Route path="/distributor" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<DistributorDashboard />} />
+              </Route>
             )}
             {isAuthenticated && user?.role === 'manufacturer' && (
-              <Route path="/manufacturer" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<ManufacturerDashboard />} />
+              </Route>
             )}
             {isAuthenticated && user?.role === 'admin' && (
-              <Route path="/admin" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<AdminDashboard />} />
+              </Route>
+
             )}
           </SentryRoutes>
         </Suspense>
+        <Toaster richColors={true} />
       </Router>
     </ErrorBoundary>
   );
