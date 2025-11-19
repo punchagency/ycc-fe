@@ -1,4 +1,3 @@
-import { isLoggedIn } from '@/utils/IsLoggedIn';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
@@ -22,7 +21,8 @@ const authSlice = createSlice({
       action: PayloadAction<{ token: string | null; refreshToken?: string | null }>
     ) => {
       const { token, refreshToken } = action.payload;
-      state.isAuthenticated = Boolean(token ?? isLoggedIn());
+
+      state.isAuthenticated = Boolean(token);
       state.token = token ?? null;
       state.refreshToken = refreshToken ?? null;
     },
