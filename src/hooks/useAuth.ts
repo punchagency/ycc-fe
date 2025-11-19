@@ -11,10 +11,11 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: AuthApi.login,
     onSuccess: (response) => {
-      const { token, refreshToken } = response.data;
-      Session.setCookie('token', token);
-      if (refreshToken) Session.setCookie('refreshToken', refreshToken);
-      dispatch(setAuth({ token, refreshToken }));
+      const data = response.data;
+
+      Session.setCookie('token', data.data.token);
+      if (data.data.refreshToken) Session.setCookie('refreshToken', data.data.refreshToken);
+      dispatch(setAuth({ token: data.data.token, refreshToken: data.data.refreshToken }));
       queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
