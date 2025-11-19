@@ -9,6 +9,8 @@ const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
 const Home = lazy(() => import("./pages/landing-page/home/home"));
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
+const SignInPage = lazy(() => import("./pages/auth/sign-in"));
+const RegisterPage = lazy(() => import("./pages/auth/register"));
 
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -18,7 +20,7 @@ const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/Manufactur
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import { useReduxAuth } from "./hooks/useReduxAuth";
-import { Loading } from "./components/Loading";
+import { Loading } from "./components/ui/Loading";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
@@ -47,9 +49,14 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/vendor-services" element={<VendorAndServices />} />
               <Route path="/about-us" element={<AboutUs />} />
+              <Route path='/login' element={<SignInPage />} />
+              <Route path='/get-started' element={<RegisterPage />} />
               {/* Future public routes can go here */}
               {/* <Route path="/about" element={<About />} /> */}
               {/* <Route path="/contact" element={<Contact />} /> */}
+            </Route>
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<UserDashboard />} />
             </Route>
 
             {/* Authenticated routes with sidebar layout */}

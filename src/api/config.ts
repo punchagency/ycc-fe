@@ -6,7 +6,7 @@ export type ApiEnvironment = 'development' | 'staging' | 'production';
 // API Environment Configuration
 export const API_ENV = {
   development: {
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:7000',
     timeout: 10000,
     headers: {
       'Content-Type': 'application/json',
@@ -60,6 +60,8 @@ export const API_ERROR_CODES = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   SERVER_ERROR: 500,
+  AUTH_TOKEN_INVALID: 'AUTH_TOKEN_INVALID',
+  AUTH_REQUIRED: 'AUTH_REQUIRED',
 };
 
 // Response Status Codes

@@ -11,8 +11,8 @@ import manprofile from "../assets/images/crew/manprofile.png";
 import { Store, Bell, ShoppingCart } from "lucide-react";
 import { useUser } from "../context/userContext";
 import { useCart } from "../context/cart/cartContext";
-import { checkPendingVendors } from "../services/admin/adminService";
-import { getNotifications } from "../services/notification/notificationService";
+import { checkPendingVendors } from "../api/services/admin/adminService";
+import { getNotifications } from "../api/services/notification/notificationService";
 
 interface AdminHeaderProps {
   isCollapsed?: boolean;

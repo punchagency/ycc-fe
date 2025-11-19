@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useLogin } from '../../data/hooks/auth';
-import type { AuthResponse } from '../../types/api';
-import { setAuth } from '../../store/slices/authSlice';
-import { setUser } from '../../store/slices/userSlice';
-import type { IUser } from '../../types/auth.type';
+import { useAuth } from '@/hooks/useAuth';
 import logo from '../../assets/images/YCC-home-banner-new.png';
-import Session from '../../utils/Session';
 
 type FormState = {
   email: string;
@@ -18,13 +12,12 @@ type FeedbackState = { type: 'success' | 'error'; message: string } | null;
 
 const SignInPage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [formState, setFormState] = useState<FormState>({
     email: '',
     password: '',
   });
   const [feedback, setFeedback] = useState<FeedbackState>(null);
-  const { mutateAsync: login, isPending } = useLogin();
+  const { login } = useAuth();
 
   const handleChange =
     (field: keyof FormState) =>
@@ -40,27 +33,7 @@ const SignInPage: React.FC = () => {
     setFeedback(null);
 
     try {
-      const response = (await login(formState)) as AuthResponse;
-      console.log('Login response:', response);
-
-      const tokens = response.data;
-      if (tokens?.token) {
-        dispatch(
-          setAuth({ token: tokens.token, refreshToken: tokens.refreshToken })
-        );
-        Session.set('token', tokens.token);
-      }
-
-      if (tokens?.refreshToken) {
-        Session.set('refreshToken', tokens.refreshToken);
-      }
-
-      const user = (tokens?.user ?? null) as IUser | null;
-      if (user) {
-        dispatch(setUser(user));
-        Session.set('user', user);
-      }
-
+      await login.mutateAsync(formState);
       setFeedback({
         type: 'success',
         message: 'Signed in successfully. Redirecting...',
@@ -178,10 +151,10 @@ const SignInPage: React.FC = () => {
 
             <button
               type='submit'
-              disabled={isPending}
+              disabled={login.isPending}
               className='w-full rounded-lg bg-sky-600 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
             >
-              {isPending ? 'Signing in...' : 'Sign in'}
+              {login.isPending ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 

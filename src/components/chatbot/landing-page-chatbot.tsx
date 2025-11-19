@@ -10,8 +10,8 @@ import "simplebar-react/dist/simplebar.min.css";
 
 import BotModalIcon from "../../assets/images/chatbot/chatbot-modal-icon.png";
 import BotOnlineIcon from "../../assets/images/chatbot/chatbot-online-icon.png";
-import { getResponseFromAI } from "../../services/AIAssistant/landingPageAIService";
-import socketService from "../../services/socket";
+import { getResponseFromAI } from "../../api/services/AIAssistant/landingPageAIService";
+import socketService from "../../api/services/socket";
 import TypingDots from "./TypingDots";
 
 interface Message {
