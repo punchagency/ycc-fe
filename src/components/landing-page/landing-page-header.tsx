@@ -13,7 +13,7 @@ import {
 import {
   ChevronDown,
   Menu as MenuIcon,
-  ArrowLeft,
+  ArrowLeft, X,
 } from "lucide-react";
 
 interface NavOption {
@@ -78,8 +78,11 @@ const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
   }, []);
 
   const toggleDrawer = () => setMobileOpen(!mobileOpen);
+  const toggleMobileMenu = () => setMobileOpen(prev => !prev);
+  const closeMobileMenu = () => setMobileOpen(false);
 
   return (
+    <>
     <header
       className={`fixed top-0 left-0 right-0 z-[1300] transition-all duration-300 ease-in-out ${
         scrolled || isServiceCheckout
@@ -274,6 +277,62 @@ const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
         </div>
       </Transition>
     </header>
+
+      <Transition show={mobileOpen}>
+        <div className="fixed inset-0 z-[1400] lg:hidden">
+          <div className="fixed inset-0 bg-black/70" onClick={closeMobileMenu} />
+          <div className="fixed left-0 top-0 h-full w-80 bg-gradient-to-br from-[#034D92] to-[#0487D9] shadow-2xl">
+            <div className="flex flex-col h-full">
+              <div className="flex items-center justify-between p-6 border-b border-white/20">
+                <Link to="/" onClick={closeMobileMenu}>
+                  <img src={logo} alt="YCC" className="h-12 w-12" />
+                </Link>
+                <button onClick={closeMobileMenu} className="text-white">
+                  <X size={28} />
+                </button>
+              </div>
+
+              <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-2">
+                {navItems.map((item) =>
+                  item.external ? (
+                    <a
+                      key={item.title}
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMobileMenu}
+                      className="block py-4 text-white/90 hover:text-white text-lg font-medium"
+                    >
+                      {item.title} <span className="text-sm">External</span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.title}
+                      to={item.link}
+                      onClick={closeMobileMenu}
+                      className={`block py-4 text-lg font-medium ${location.pathname === item.link ? "text-white font-bold" : "text-white/80 hover:text-white"
+                        }`}
+                    >
+                      {item.title}
+                    </Link>
+                  )
+                )}
+              </nav>
+
+              <div className="p-6 border-t border-white/20 space-y-4">
+                <Link to="/get-started" onClick={closeMobileMenu} className="block w-full text-center bg-white text-[#0487D9] font-bold py-4 rounded-lg text-lg hover:bg-gray-100">
+                  Join Now
+                </Link>
+                <Link to="/login" onClick={closeMobileMenu} className="block w-full text-center bg-transparent text-white border-2 border-white font-bold py-4 rounded-lg text-lg hover:bg-white/10">
+                  Sign In
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+      
+      </>
   );
 };
 

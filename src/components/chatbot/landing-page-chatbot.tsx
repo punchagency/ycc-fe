@@ -125,7 +125,7 @@ const LandingPageChatbot: React.FC = () => {
           <img
             src={BotModalIcon}
             alt="AI Assistant"
-            className="w-20 h-20 drop-shadow-2xl transition-all duration-300 
+            className="w-14 h-14 drop-shadow-2xl transition-all duration-300 
                      group-hover:scale-110 group-hover:rotate-12"
           />
         </div>

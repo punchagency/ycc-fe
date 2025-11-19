@@ -5,13 +5,13 @@ import banner from "../../../assets/images/water-wide.png";
 
 const Section4Home: React.FC = () => {
   return (
-    <section className="pb-[330px] md:pb-[120px]">
+    <section className="pb-[30vh] md:pb-[14vh]">
       <div
-        className="relative flex flex-col items-center justify-center w-full overflow-visible bg-[#02214B] bg-cover bg-center h-[700px] sm:h-[700px] md:h-[650px] lg:h-[718px] px-5 md:px-0"
+        className="relative flex flex-col items-center justify-center w-full overflow-visible bg-[#02214B] bg-cover bg-center h-[80vh] min-h-[600px] px-5 md:px-0"
         style={{ backgroundImage: `url(${banner})` }}
       >
         <div className="flex justify-center w-full max-w-6xl">
-          <div className="flex flex-col items-start md:items-center justify-center w-full sm:w-[90%] md:w-[80%] lg:w-[944px] gap-5 sm:gap-6 md:gap-8 -mt-[250px] md:-mt-[60px]">
+          <div className="flex flex-col items-start md:items-center justify-center w-full sm:w-[90%] md:w-[80%] lg:w-[944px] gap-5 sm:gap-6 md:gap-8 -mt-[35vh] md:-mt-[10vh]">
             <h3 className="text-white font-[Plus Jakarta Sans] font-medium text-[28px] sm:text-[36px] md:text-[46px] leading-[34px] sm:leading-[42px] md:leading-[51px] text-left md:text-center">
               Join Our Crew Network
             </h3>
@@ -38,10 +38,13 @@ const Section4Home: React.FC = () => {
 
           {/* Floating Resource Box */}
           <div
-            className="absolute left-1/2 bottom-[240px] sm:bottom-[-8%] md:bottom-0 transform -translate-x-1/2 translate-y-[100%] sm:translate-y-[30%] md:translate-y-[45%] lg:translate-y-[60%]
-            flex flex-wrap md:flex-nowrap justify-center items-center w-[90%] sm:w-[80%] md:w-[70%] lg:w-[1180px]"
+            className="absolute left-1/2 bottom-[35vh] sm:bottom-[-8%] md:bottom-0 
+            transform -translate-x-1/2 translate-y-[100%] sm:translate-y-[30%] 
+            md:translate-y-[45%] lg:translate-y-[60%] flex flex-wrap md:flex-nowrap 
+            justify-center items-center w-[90%] sm:w-[80%] md:w-[70%] lg:w-[80%]"
           >
-            <div className="w-full bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)] flex flex-col md:flex-row overflow-hidden">
+            <div className="w-full bg-white rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)] 
+              flex flex-col md:flex-row overflow-hidden md:h-[40vh]">
               {/* Left Content */}
               <div className="flex flex-col justify-between gap-7 p-5 md:p-10 w-full md:w-1/2 relative">
                 <div className="flex flex-col gap-3">
@@ -69,11 +72,11 @@ const Section4Home: React.FC = () => {
               </div>
 
               {/* Right Image */}
-              <div className="w-full md:w-1/2 relative">
+              <div className="w-full md:w-1/2 relative md:h-full">
                 <img
                   src={yatch}
                   alt="Yacht Crew Center"
-                  className="w-full h-[300px] md:h-[30vh] rounded-b-lg md:rounded-b-none md:rounded-r-lg object-cover"
+                  className="w-full h-[40vh] md:h-full rounded-b-lg md:rounded-b-none md:rounded-r-lg object-cover"
                 />
                 <div className="absolute top-0 left-0 h-full w-[35%] bg-gradient-to-r from-white to-transparent z-10"></div>
               </div>
