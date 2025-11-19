@@ -12,9 +12,6 @@ const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
 const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
 
-
-import * as Sentry from '@sentry/react';
-
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const DistributorDashboard = lazy(() => import("./pages/distributor/DistributorDashboard"));
@@ -43,30 +40,34 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <Router>
-        <SentryRoutes>
-          {/* Unauthenticated routes - always accessible */}
-          <Route element={<LandingPageLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/vendor-services" element={<VendorAndServices />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/resource-center" element={<ResourceCenter />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-          </Route>
-          
-          {/* Authenticated routes based on user role */}
-          {isAuthenticated && user?.role === 'user' && (
-            <Route path="/dashboard" element={<Home />} />
-          )}
-          {isAuthenticated && user?.role === 'distributor' && (
-            <Route path="/distributor" element={<Home />} />
-          )}
-          {isAuthenticated && user?.role === 'manufacturer' && (
-            <Route path="/manufacturer" element={<Home />} />
-          )}
-          {isAuthenticated && user?.role === 'admin' && (
-            <Route path="/admin" element={<Home />} />
-          )}
-        </SentryRoutes>
+        <Suspense
+          fallback={<Loading />}
+        >
+          <SentryRoutes>
+            {/* Unauthenticated routes - always accessible */}
+            <Route element={<LandingPageLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/vendor-services" element={<VendorAndServices />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/resource-center" element={<ResourceCenter />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+            </Route>
+            
+            {/* Authenticated routes based on user role */}
+            {isAuthenticated && user?.role === 'user' && (
+              <Route path="/dashboard" element={<Home />} />
+            )}
+            {isAuthenticated && user?.role === 'distributor' && (
+              <Route path="/distributor" element={<Home />} />
+            )}
+            {isAuthenticated && user?.role === 'manufacturer' && (
+              <Route path="/manufacturer" element={<Home />} />
+            )}
+            {isAuthenticated && user?.role === 'admin' && (
+              <Route path="/admin" element={<Home />} />
+            )}
+          </SentryRoutes>
+        </Suspense>
       </Router>
     </ErrorBoundary>
   );
