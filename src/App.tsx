@@ -45,7 +45,7 @@ const App: React.FC = () => {
 
   const { user } = useReduxAuth();
   const isAuthenticated = isLoggedIn();
-  console.log({ user, isAuthenticated });
+
   useEffect(() => {
     if (import.meta.env.PROD && user?._id && user?.email) {
       setSentryUser({
