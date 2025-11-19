@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface ButtonProps {
   text: string;
@@ -63,7 +63,7 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
 
       {/* Text Content */}
       <div
-        className="absolute top-1/2 md:top-[60%] left-1/2 md:left-[40%] lg:left-[27%]
+        className="absolute top-1/2 md:top-[60%] left-1/2 md:left-[40%] lg:left-[30%]
         -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col gap-5 sm:gap-6 md:gap-7
         text-center md:text-left w-[90%] sm:w-[85%] md:w-auto max-w-full sm:max-w-[600px] md:max-w-[690px] px-4 sm:px-6 md:px-0"
       >
@@ -94,7 +94,7 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
         {button1 && (
           <div
             className="flex flex-col sm:flex-col md:flex-row gap-3 md:gap-[15px] 
-            justify-center md:justify-start items-center w-full md:w-"
+            justify-center md:justify-start items-center w-full md:w-auto"
           >
             <Link
               to={button1.path}
@@ -104,7 +104,7 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
                 className="flex items-center w-full max-w-[240px] justify-center min-w-[200px] sm:min-w-[240px] py-2.5 px-3 md:py-3 md:px-3.5
                 text-white font-inter font-medium text-lg md:text-base text-center align-middle
                 rounded-md transition-all duration-300 ease-in-out
-                hover:translate-y-[-3px] hover:shadow-[0_4px_12px_1px_rgba(4, 135, 217, 0.3)] cursor-pointer"
+                hover:translate-y-[-3px] hover:shadow-[0_4px_12px_1px_rgba(4,135,217,0.3)] cursor-pointer"
                 style={{
                   background: linearGradient,
                 }}

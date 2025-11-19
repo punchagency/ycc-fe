@@ -19,7 +19,8 @@ const ContactUs: React.FC = () => {
 
   const header = (
     <>
-      Contact Yacht <GradientText>Crew</GradientText>{" "}
+      Contact Yacht <br/>
+      <GradientText>Crew</GradientText>{" "}
       <GradientText>Center</GradientText> – We're here for you
     </>
   );
@@ -61,7 +62,7 @@ const GradientText: React.FC<GradientTextProps> = ({ children }) => {
           "linear-gradient(86.8deg, #FFFFFF -51.91%, #209DEB 84.68%)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
-        fontSize: "40px",
+        fontSize: "50px",
         lineHeight: "52px",
         letterSpacing: "-2%",
       }}

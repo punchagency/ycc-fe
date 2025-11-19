@@ -42,7 +42,7 @@ const HomeLandingPage: React.FC = () => {
 
   return (
 
-    <div className='flex flex-col gap-[47px] sm:gap-[60px] md:gap-[90px] lg:gap-[120px] max-w-screen mb-[45px] sm:mb-[23px] md:mb-[30px]'>
+    <div className='flex flex-col gap-[47px] sm:gap-[60px] md:gap-[90px] lg:gap-[120px] max-w-screen'>
       <LandingPageBanner
         backgroundImage={backgroundImage}
         header={header}
