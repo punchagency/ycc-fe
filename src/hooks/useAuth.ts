@@ -38,11 +38,8 @@ export const useAuth = () => {
 
   const registerMutation = useMutation({
     mutationFn: AuthApi.register,
-    onSuccess: (response) => {
-      const { token, refreshToken } = response.data;
-      Session.setCookie('token', token);
-      if (refreshToken) Session.setCookie('refreshToken', refreshToken);
-      dispatch(setAuth({ token, refreshToken }));
+    onSuccess: () => {
+      // Registration does not return tokens; activation/login will set auth.
       queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
