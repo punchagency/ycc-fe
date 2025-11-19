@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useRegister } from '../../data/hooks/auth';
-import type { RegisterPayload } from '../../data/api/auth';
-import type { RegistrationResponse } from '../../types/api';
-import { setAuth } from '../../store/slices/authSlice';
-import { setUser } from '../../store/slices/userSlice';
-import type { IUser } from '../../types/auth.type';
+import { useAuth } from '@/hooks/useAuth';
+import type { RegisterInput } from '../../types/auth.type';
 import logo from '../../assets/images/YCC-home-banner-new.png';
-import Session from '../../utils/Session';
 
-type FormState = RegisterPayload;
+type FormState = RegisterInput;
 
 type FeedbackState = { type: 'success' | 'error'; message: string } | null;
 
@@ -19,7 +13,7 @@ const initialFormState: FormState = {
   lastName: '',
   email: '',
   password: '',
-  role: 'crew',
+  role: 'user',
   phone: '',
   nationality: '',
   businessName: '',
@@ -34,22 +28,21 @@ const initialFormState: FormState = {
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [formState, setFormState] = useState<FormState>(initialFormState);
   const [feedback, setFeedback] = useState<FeedbackState>(null);
-  const { mutateAsync: register, isPending } = useRegister();
+  const { register } = useAuth();
 
   const handleInputChange =
     (field: keyof FormState, transform?: (value: string) => string) =>
-    (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-      const value = transform
-        ? transform(event.target.value)
-        : event.target.value;
-      setFormState((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
-    };
+      (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = transform
+          ? transform(event.target.value)
+          : event.target.value;
+        setFormState((prev) => ({
+          ...prev,
+          [field]: value,
+        }));
+      };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] ?? null;
@@ -64,27 +57,7 @@ const RegisterPage: React.FC = () => {
     setFeedback(null);
 
     try {
-      const response = (await register(formState)) as RegistrationResponse;
-      console.log('Registration response:', response);
-
-      const data = response.data;
-      if (data?.token) {
-        dispatch(
-          setAuth({ token: data.token, refreshToken: data.refreshToken })
-        );
-        Session.set('token', data.token);
-      }
-
-      if (data?.refreshToken) {
-        Session.set('refreshToken', data.refreshToken);
-      }
-
-      const user = (data?.user ?? null) as IUser | null;
-      if (user) {
-        dispatch(setUser(user));
-        Session.set('user', user);
-      }
-
+      await register.mutateAsync(formState);
       setFeedback({
         type: 'success',
         message: 'Registration successful. Redirecting...',
@@ -121,7 +94,7 @@ const RegisterPage: React.FC = () => {
   return (
     <div className='min-h-screen bg-white grid grid-cols-1 lg:grid-cols-2'>
       {/* Left Panel - Hero Section */}
-      <div className='relative hidden lg:flex items-center justify-center bg-gradient-to-b from-sky-900 to-slate-900 p-12 text-white'>
+      <div className='relative hidden lg:flex items-center justify-center bg-linear-to-b from-sky-900 to-slate-900 p-12 text-white'>
         <div className='space-y-6 max-w-md relative z-10'>
           <img
             src={logo}
@@ -454,11 +427,10 @@ const RegisterPage: React.FC = () => {
 
             {feedback && (
               <p
-                className={`text-sm ${
-                  feedback.type === 'success'
+                className={`text-sm ${feedback.type === 'success'
                     ? 'text-emerald-500'
                     : 'text-rose-500'
-                }`}
+                  }`}
               >
                 {feedback.message}
               </p>
@@ -467,10 +439,10 @@ const RegisterPage: React.FC = () => {
             <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
               <button
                 type='submit'
-                disabled={isPending}
+                disabled={register.isPending}
                 className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
               >
-                {isPending ? 'Creating account...' : 'Create account'}
+                {register.isPending ? 'Creating account...' : 'Create account'}
               </button>
 
               <button

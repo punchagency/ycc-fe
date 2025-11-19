@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import type { ReactNode, Dispatch, SetStateAction } from "react";
 // import { getResponseFromAI } from "../../services/AIAssistant/landingPageAIService";
-import socketService from "../../services/socket";
+import socketService from "../../api/services/socket";
 
 // Define message type
 interface ChatMessage {

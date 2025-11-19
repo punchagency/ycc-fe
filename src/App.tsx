@@ -6,11 +6,14 @@ import { Toaster } from "./components/ui/sonner";
 // Landing Page
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
+const SignInPage = lazy(() => import("./pages/auth/sign-in"));
+const RegisterPage = lazy(() => import("./pages/auth/register"));
+
 const Home = lazy(() => import("./pages/landing-page/home/home"));
 const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
-const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
 const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
+const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
 
 const CrewLandingPage = lazy(() => import("./pages/landing-page/crew/crew"));
 const EngineeringLandingPage = lazy(() => import("./pages/landing-page/engineering/engineering"));
@@ -27,7 +30,7 @@ const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/Manufactur
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import { useReduxAuth } from "./hooks/useReduxAuth";
-import { Loading } from "./components/Loading";
+import { Loading } from "./components/ui/Loading";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
@@ -66,23 +69,39 @@ const App: React.FC = () => {
               <Route path="/exterior" element={<ExteriorLandingPage />} />
               <Route path="/captain" element={<CaptainLandingPage />} />
               <Route path="/chef-gallery" element={<ChefGalleryLandingPage />} />
+              <Route path='/login' element={<SignInPage />} />
+              <Route path='/get-started' element={<RegisterPage />} />
             </Route>
-            
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<UserDashboard />} />
+            </Route>
+
+            {/* Authenticated routes with sidebar layout */}
             {/* Authenticated routes based on user role */}
             {isAuthenticated && user?.role === 'user' && (
-              <Route path="/dashboard" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<UserDashboard />} />
+              </Route>
             )}
             {isAuthenticated && user?.role === 'distributor' && (
-              <Route path="/distributor" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<DistributorDashboard />} />
+              </Route>
             )}
             {isAuthenticated && user?.role === 'manufacturer' && (
-              <Route path="/manufacturer" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<ManufacturerDashboard />} />
+              </Route>
             )}
             {isAuthenticated && user?.role === 'admin' && (
-              <Route path="/admin" element={<Home />} />
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<AdminDashboard />} />
+              </Route>
+
             )}
           </SentryRoutes>
         </Suspense>
+        <Toaster richColors={true} />
       </Router>
     </ErrorBoundary>
   );
