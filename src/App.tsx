@@ -21,6 +21,8 @@ const InteriorLandingPage = lazy(() => import("./pages/landing-page/interior/int
 const ExteriorLandingPage = lazy(() => import("./pages/landing-page/exterior/exterior"));
 const CaptainLandingPage = lazy(() => import("./pages/landing-page/captain/captain"));
 const ChefGalleryLandingPage = lazy(() => import("./pages/landing-page/chef-gallery/chef-gallery"));
+const TermsAndConditions = lazy(() => import("./pages/terms-and-conditions/terms-and-conditions"));
+const PrivacyPolicy = lazy(() => import("./pages/privacy-policy/privacy-policy"));
 
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -72,6 +74,10 @@ const App: React.FC = () => {
               <Route path='/login' element={<SignInPage />} />
               <Route path='/get-started' element={<RegisterPage />} />
             </Route>
+    
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<UserDashboard />} />
             </Route>
