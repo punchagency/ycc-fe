@@ -5,29 +5,31 @@ import type { CategoryInput } from "../../types/category.type";
 const CategoryApi = {
     createCategory: (data: CategoryInput) => {
         const formData = new FormData();
-        formData.append('name', data.name);
+        formData.append('name', data?.name || '');
         if (data.description) formData.append('description', data.description);
         if (data.type) formData.append('type', data.type);
         if (data.image) formData.append('image', data.image);
+        formData.append('isApproved', String(data?.isApproved || false));
         return api.post(API_ENDPOINTS.category.createCategory, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
     },
     updateCategory: (id: string, data: CategoryInput) => {
         const formData = new FormData();
-        formData.append('name', data.name);
-        if (data.description) formData.append('description', data.description);
-        if (data.type) formData.append('type', data.type);
-        if (data.image) formData.append('image', data.image);
+        if (data?.name) formData.append('name', data?.name);
+        if (data?.description) formData.append('description', data.description);
+        if (data?.type) formData.append('type', data.type);
+        if (data?.image) formData.append('image', data.image);
+        formData.append('isApproved', String(data?.isApproved || false));
         return api.put(API_ENDPOINTS.category.updateCategory.replace(':id', id), formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
     },
-    deleteCategory: (id: string) => 
+    deleteCategory: (id: string) =>
         api.delete(API_ENDPOINTS.category.deleteCategory.replace(':id', id)),
-    getCategories: () => 
+    getCategories: () =>
         api.get(API_ENDPOINTS.category.getCategories),
-    getCategory: (id: string) => 
+    getCategory: (id: string) =>
         api.get(API_ENDPOINTS.category.getCategory.replace(':id', id)),
 };
 
