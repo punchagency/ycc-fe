@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as Sentry from '@sentry/react';
 import { Toaster } from "./components/ui/sonner";
 
-// main pages
+// Landing Page
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
 const Home = lazy(() => import("./pages/landing-page/home/home"));
@@ -11,6 +11,13 @@ const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices
 const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
 const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
 const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
+
+const CrewLandingPage = lazy(() => import("./pages/landing-page/crew/crew"));
+const EngineeringLandingPage = lazy(() => import("./pages/landing-page/engineering/engineering"));
+const InteriorLandingPage = lazy(() => import("./pages/landing-page/interior/interior"));
+const ExteriorLandingPage = lazy(() => import("./pages/landing-page/exterior/exterior"));
+const CaptainLandingPage = lazy(() => import("./pages/landing-page/captain/captain"));
+const ChefGalleryLandingPage = lazy(() => import("./pages/landing-page/chef-gallery/chef-gallery"));
 
 const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -46,11 +53,19 @@ const App: React.FC = () => {
           <SentryRoutes>
             {/* Unauthenticated routes - always accessible */}
             <Route element={<LandingPageLayout />}>
+              {/* LANDING PAGE */}
               <Route path="/" element={<Home />} />
               <Route path="/vendor-services" element={<VendorAndServices />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/resource-center" element={<ResourceCenter />} />
               <Route path="/contact-us" element={<ContactUs />} />
+
+              <Route path="/crew" element={<CrewLandingPage />} />
+              <Route path="/engineering" element={<EngineeringLandingPage />} />
+              <Route path="/interior" element={<InteriorLandingPage />} />
+              <Route path="/exterior" element={<ExteriorLandingPage />} />
+              <Route path="/captain" element={<CaptainLandingPage />} />
+              <Route path="/chef-gallery" element={<ChefGalleryLandingPage />} />
             </Route>
             
             {/* Authenticated routes based on user role */}
