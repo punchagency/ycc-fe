@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const notificationSound = new Audio('./audio/notification.mp3');
-notificationSound.volume = 1;
 const Session = {
 
     setCookie: (cname: string, cvalue: string) => {
@@ -77,53 +75,6 @@ const Session = {
     removeAll: () => {
         localStorage.clear();
     },
-    // showAlert: ({ str, type = 'default' }: { str?: string, type?: 'info' | 'success' | 'warning' | 'error' | 'default' }) => {
-    //     const item = localStorage.getItem('alerts');
-    //     localStorage.removeItem('alerts');
-    //     let obj: Record<string, any> = {};
-    //     if (item) {
-    //         obj = JSON.parse(item);
-    //     }
-    //     if (Validate.string(str)) {
-    //         if (!obj[type]) obj[type] = [];
-    //         obj[type].push(str);
-    //     }
-    //     const showTheToast: Record<string, any> = {
-    //         info: toast.info,
-    //         success: toast.success,
-    //         warning: toast.warning,
-    //         error: toast.error,
-    //         default: toast
-    //     }
-    //     Object.keys(obj).forEach((color: string) => {
-    //         if (obj[color].length > 0) {
-    //             obj[color].forEach((element: string) => {
-    //                 showTheToast[color](element, {
-    //                     position: "top-center",
-    //                     autoClose: 10000,
-    //                     hideProgressBar: false,
-    //                     closeOnClick: true,
-    //                     pauseOnHover: true,
-    //                     draggable: true,
-    //                     progress: undefined,
-    //                     theme: "colored",
-    //                     transition: Bounce,
-    //                 });
-
-
-    //                 // try {
-    //                 //     notificationSound.play();
-    //                 // } catch (error) {
-    //                 //     console.log(JSON.stringify(error, null, 2));
-    //                 // }
-    //             })
-    //         }
-    //     })
-
-
-
-    // },
-
 };
 
 export default Session;
