@@ -118,7 +118,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: "Plus Jakarta Sans", "Geist", sans-serif !important;
+  font-family: "Geist", sans-serif !important;
   line-height: 1.5;
   font-weight: 400;
   --radius: 0.625rem;
@@ -149,7 +149,7 @@
   --sidebar-foreground: #103b57;
   --sidebar-primary: #0387d9;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #6b7280;
+  --sidebar-accent: #0387d9;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #e0e0e0;
   --sidebar-ring: #0387d9;

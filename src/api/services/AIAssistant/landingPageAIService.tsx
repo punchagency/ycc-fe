@@ -1,4 +1,5 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { type AxiosInstance } from "axios";
+import { toast } from "sonner";
 
 // Environment variables - CRA exposes them directly on import.meta or window
 const API_URL = import.meta.env.REACT_APP_API_URL as string | undefined;
@@ -6,7 +7,7 @@ const N8N_SESSION_ID = import.meta.env.REACT_APP_N8N_SESSION_ID as string | unde
 
 // Ensure API URL exists
 if (!API_URL) {
-  console.warn("⚠️ Missing REACT_APP_API_URL in environment variables.");
+  toast.error("⚠️ Missing REACT_APP_API_URL in environment variables.");
 }
 
 // Define types for chat data and messages

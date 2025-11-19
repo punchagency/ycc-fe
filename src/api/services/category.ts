@@ -1,6 +1,6 @@
-import api from "../api/interceptors";
-import API_ENDPOINTS from "../constants/api_endpoints";
-import type { CategoryInput } from "../types/category.type";
+import api from "../client";
+import API_ENDPOINTS from "../../constants/api_endpoints";
+import type { CategoryInput } from "../../types/category.type";
 
 const CategoryApi = {
     createCategory: (data: CategoryInput) => {

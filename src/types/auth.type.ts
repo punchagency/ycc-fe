@@ -8,7 +8,7 @@ export interface RegisterInput {
     password: string;
     phone: string;
     nationality: string;
-    profilePicture: File;
+    profilePicture: File | null;
     role: typeof USER_ROLES[number];
     businessName?: string;
     businessType?: string;
