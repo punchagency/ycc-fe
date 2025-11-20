@@ -1,9 +1,9 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import * as Sentry from '@sentry/react';
 import { Toaster } from "./components/ui/sonner";
 
-// Landing Page
+// Lazy imports from origin/main
 const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
 const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
 const SignInPage = lazy(() => import("./pages/auth/sign-in"));
@@ -42,14 +42,22 @@ import { useAuth } from "./hooks/useAuth";
 import { Loading } from "./components/ui/Loading";
 import { isLoggedIn } from "./utils/IsLoggedIn";
 
+// Route definition files (clean system)
+import { publicRoutes } from "./routes/publicRoutes";
+import { crewRoutes } from "./routes/crewRoutes";
+import { distributorRoutes } from "./routes/distributorRoutes";
+import { manufacturerRoutes } from "./routes/manufacturerRoutes";
+import { adminRoutes } from "./routes/adminRoutes";
+import { useReduxUser } from "./hooks/useReduxUser";
+
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
 const App: React.FC = () => {
-  // Initialize auth state by fetching profile on app load
   useAuth();
 
   const { user } = useReduxAuth();
   const isAuthenticated = isLoggedIn();
+  const reduxUser = useReduxUser();
 
   useEffect(() => {
     if (import.meta.env.PROD && user?._id && user?.email) {
@@ -61,66 +69,56 @@ const App: React.FC = () => {
     }
   }, [user]);
 
+  // Clean consolidated route decision logic
+  const getAuthenticatedRoutes = () => {
+    if (!isAuthenticated || !user?.role) return null;
+
+    switch (user.role) {
+      case "user":
+        return crewRoutes;
+      case "distributor":
+        return distributorRoutes;
+      case "manufacturer":
+        return manufacturerRoutes;
+      case "admin":
+        return adminRoutes;
+      default:
+        return null;
+    }
+  };
+
+  const authenticatedRoutes = getAuthenticatedRoutes();
+
+  const renderRoutes = (routes: any[]) => {
+    return routes.map((route, index) => {
+      if (route.children) {
+        return (
+          <Route key={index} path={route.path} element={route.element}>
+            {renderRoutes(route.children)}
+          </Route>
+        );
+      }
+      return <Route key={index} path={route.path} element={route.element} index={route.index} />;
+    });
+  };
+
   return (
     <ErrorBoundary>
       <Router>
-        <Suspense
-          fallback={<Loading />}
-        >
+        <Suspense fallback={<Loading />}>
           <SentryRoutes>
-            {/* Unauthenticated routes - always accessible */}
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route element={<LandingPageLayout />}>
-              {/* LANDING PAGE */}
-              <Route path="/" element={<Home />} />
-              <Route path="/vendor-services" element={<VendorAndServices />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/resource-center" element={<ResourceCenter />} />
-              <Route path="/contact-us" element={<ContactUs />} />
+            {/* Public routes */}
+            {renderRoutes(publicRoutes)}
 
-              <Route path="/crew" element={<CrewLandingPage />} />
-              <Route path="/engineering" element={<EngineeringLandingPage />} />
-              <Route path="/interior" element={<InteriorLandingPage />} />
-              <Route path="/exterior" element={<ExteriorLandingPage />} />
-              <Route path="/captain" element={<CaptainLandingPage />} />
-              <Route path="/chef-gallery" element={<ChefGalleryLandingPage />} />
-              <Route path='/login' element={<SignInPage />} />
-              <Route path='/logout' element={<Logout />} />
-              <Route path='/get-started' element={<RegisterPage />} />
-            </Route>    
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            {/* Authenticated routes with sidebar layout */}
-            {/* Authenticated routes based on user role */}
-            {isAuthenticated && user?.role === 'user' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<UserDashboard />} />
-              </Route>
-            )}
-            {isAuthenticated && user?.role === 'distributor' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<DistributorDashboard />} />
-                <Route path="/services" element={<DistributorServices />} />
-              </Route>
-            )}
-            {isAuthenticated && user?.role === 'manufacturer' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<ManufacturerDashboard />} />
-              </Route>
-            )}
-            {isAuthenticated && user?.role === 'admin' && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<AdminDashboard />} />
-                <Route path="/category" element={<Category />} />
-              </Route>
-            )}
-            {isAuthenticated && (
-              <Route element={<DashboardLayout />}>
-                <Route path="/profile" element={<Profile />} />
-              </Route>
-            )}
+            {/* Auth routes based on role */}
+            {authenticatedRoutes && renderRoutes(authenticatedRoutes)}
+
+            {/* Default fallback */}
+            <Route path="*" element={<Navigate to="/" />} />
           </SentryRoutes>
         </Suspense>
+
+        {/* Keep richColors */}
         <Toaster richColors={true} position="top-right" />
       </Router>
     </ErrorBoundary>
@@ -128,6 +126,6 @@ const App: React.FC = () => {
 };
 
 const AppWithProfiler = Sentry.withProfiler(App);
-AppWithProfiler.displayName = 'App';
+AppWithProfiler.displayName = "App";
 
 export default AppWithProfiler;
