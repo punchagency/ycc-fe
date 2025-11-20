@@ -4,6 +4,9 @@ import { useAuth } from '@/hooks/useAuth';
 import type { RegisterInput } from '../../types/auth.type';
 import logo from '../../assets/images/YCC-home-banner-new.png';
 import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
 type FormState = RegisterInput;
 
@@ -215,7 +218,7 @@ const RegisterPage: React.FC = () => {
                 >
                   First name *
                 </label>
-                <input
+                <Input
                   id='firstName'
                   type='text'
                   required
@@ -233,7 +236,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Last name *
                 </label>
-                <input
+                <Input
                   id='lastName'
                   type='text'
                   required
@@ -255,7 +258,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Email *
                 </label>
-                <input
+                <Input
                   id='email'
                   type='email'
                   required
@@ -273,7 +276,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Phone
                 </label>
-                <input
+                <Input
                   id='phone'
                   type='tel'
                   value={formState.phone ?? ''}
@@ -294,7 +297,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Password *
                 </label>
-                <input
+                <Input
                   id='password'
                   type='password'
                   required
@@ -312,19 +315,23 @@ const RegisterPage: React.FC = () => {
                 >
                   Role *
                 </label>
-                <select
-                  id='role'
-                  value={formState.role}
-                  onChange={(e) => {
+                <Select
+                  onValueChange={(value) => {
                     setCurrentStep(1);
-                    handleInputChange('role')(e);
+                    handleInputChange('role')({
+                      target: { value },
+                    } as React.ChangeEvent<HTMLInputElement>);
                   }}
-                  className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30'
                 >
-                  <option value='user'>User</option>
-                  <option value='distributor'>Distributor</option>
-                  <option value='manufacturer'>Manufacturer</option>
-                </select>
+                  <SelectTrigger className='w-full'>
+                    <SelectValue placeholder='Select a role' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='user'>Crew</SelectItem>
+                    <SelectItem value='distributor'>Distributor</SelectItem>
+                    <SelectItem value='manufacturer'>Manufacturer</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             )}
@@ -338,7 +345,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Nationality
                 </label>
-                <input
+                <Input
                   id='nationality'
                   type='text'
                   value={formState.nationality ?? ''}
@@ -355,7 +362,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Profile picture
                 </label>
-                <input
+                <Input
                   id='profilePicture'
                   type='file'
                   accept='image/jpeg,image/png,image/jpg,image/webp'
@@ -373,11 +380,11 @@ const RegisterPage: React.FC = () => {
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-slate-700' htmlFor='street'>Street *</label>
-                <input id='street' type='text' required value={formState.address.street} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, street: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='123 Marina Blvd' />
+                <Input id='street' type='text' required value={formState.address.street} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, street: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='123 Marina Blvd' />
               </div>
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-slate-700' htmlFor='zipcode'>Zipcode *</label>
-                <input id='zipcode' type='text' required value={formState.address.zipcode} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, zipcode: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='90210' />
+                <Input id='zipcode' type='text' required value={formState.address.zipcode} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, zipcode: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='90210' />
               </div>
             </div>
             )}
@@ -386,15 +393,15 @@ const RegisterPage: React.FC = () => {
             <div className='grid gap-4 md:grid-cols-3'>
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-slate-700' htmlFor='city'>City *</label>
-                <input id='city' type='text' required value={formState.address.city} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, city: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='Miami' />
+                <Input id='city' type='text' required value={formState.address.city} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, city: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='Miami' />
               </div>
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-slate-700' htmlFor='state'>State *</label>
-                <input id='state' type='text' required value={formState.address.state} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, state: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='FL' />
+                <Input id='state' type='text' required value={formState.address.state} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, state: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='FL' />
               </div>
               <div className='space-y-2'>
                 <label className='text-sm font-medium text-slate-700' htmlFor='country'>Country *</label>
-                <input id='country' type='text' required value={formState.address.country} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, country: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='United States' />
+                <Input id='country' type='text' required value={formState.address.country} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, country: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='United States' />
               </div>
             </div>
             )}
@@ -408,7 +415,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Business name
                 </label>
-                <input
+                <Input
                   id='businessName'
                   type='text'
                   value={formState.businessName ?? ''}
@@ -425,7 +432,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Business type
                 </label>
-                <input
+                <Input
                   id='businessType'
                   type='text'
                   value={formState.businessType ?? ''}
@@ -446,7 +453,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Business email
                 </label>
-                <input
+                <Input
                   id='businessEmail'
                   type='email'
                   value={formState.businessEmail ?? ''}
@@ -463,7 +470,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Business phone
                 </label>
-                <input
+                <Input
                   id='businessPhone'
                   type='tel'
                   value={formState.businessPhone ?? ''}
@@ -484,7 +491,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Website
                 </label>
-                <input
+                <Input
                   id='website'
                   type='url'
                   value={formState.website ?? ''}
@@ -501,7 +508,7 @@ const RegisterPage: React.FC = () => {
                 >
                   Tax ID
                 </label>
-                <input
+                <Input
                   id='taxId'
                   type='text'
                   value={formState.taxId ?? ''}
@@ -521,7 +528,7 @@ const RegisterPage: React.FC = () => {
               >
                 License
               </label>
-              <input
+              <Input
                 id='license'
                 type='text'
                 value={formState.license ?? ''}
@@ -545,40 +552,41 @@ const RegisterPage: React.FC = () => {
 
             <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
               {!isBusinessRole && (
-                <button
+                <Button
                   type='submit'
                   disabled={register.isPending}
                   className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
                 >
                   {register.isPending ? 'Creating account...' : 'Create account'}
-                </button>
+                </Button>
               )}
               {isBusinessRole && currentStep === 1 && (
-                <button
+                <Button
                   type='submit'
                   disabled={register.isPending}
                   className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
                 >
                   Next
-                </button>
+                </Button>
               )}
               {isBusinessRole && currentStep === 2 && (
-                <button
+                <Button
                   type='submit'
                   disabled={register.isPending}
                   className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
                 >
                   {register.isPending ? 'Creating account...' : 'Create account'}
-                </button>
+                </Button>
               )}
 
-              <button
+              <Button
                 type='button'
+                variant="ghost"
                 onClick={resetOptionalFields}
                 className='text-sm font-medium text-slate-500 underline-offset-4 hover:text-slate-700 hover:underline'
               >
                 Clear optional details
-              </button>
+              </Button>
             </div>
           </form>
 
