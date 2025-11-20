@@ -1,7 +1,18 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import profileUpload from "../../../assets/images/profile-upload.png";
 import { useReduxAuth } from "../../../hooks/useReduxAuth";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import countries from "react-phone-number-input/locale/en.json";
+// import metadata from "react-phone-number-input/metadata.min.json";
 
 
 const ProfilePage: React.FC = () => {
@@ -13,6 +24,9 @@ const ProfilePage: React.FC = () => {
   const [picLoading, setPicLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const picRef = useRef<HTMLImageElement>(null);
+  const [countries, setCountries] = useState<string[]>([]);
+
+  const { updateProfile, profile } = useAuth();
 
   // Edit profile modal state
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -21,6 +35,15 @@ const ProfilePage: React.FC = () => {
     lastName: user?.lastName || "",
     phone: user?.phone || "",
     nationality: user?.nationality || "",
+    profilePicture: user?.profilePicture || "",
+    address: {
+      street: user?.address?.street || "",
+      zipcode: user?.address?.zipcode || "",
+      city: user?.address?.city || "",
+      state: user?.address?.state || "",
+      country: user?.address?.country || "",
+    }
+
   });
 
   if (!user) return <div>Loading...</div>;
@@ -30,13 +53,43 @@ const ProfilePage: React.FC = () => {
   const handleRemovePicture = () => console.log("Remove picture");
   const handleFileChange = () => console.log("File changed");
 
-  const handleEditSubmit = (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Call API to update profile
-    console.log("Updating profile:", editForm);
-    alert("Profile updated successfully! (Connect API to save)");
-    setIsEditModalOpen(false);
+
+    try {
+      await updateProfile.mutateAsync(editForm);
+      
+      toast.success("Profile updated successfully!");
+      setIsEditModalOpen(false); // Only close on success
+    } catch (error: any) {
+      console.error("Update failed:", error);
+      toast.error(
+        error?.response?.data?.message || "Failed to update profile. Please try again."
+      );
+      // Don't close modal on error!
+    }
   };
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        const data = await response.json();
+
+        const countryNames = data
+          .map((country: any) => country.name.common)
+          .filter((name: string) => name && name.trim() !== "") // filter out empty names
+          .sort(); // sort alphabetically
+
+        setCountries(countryNames);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+        setCountries([]); // set empty array on error
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   return (
     <div className="mx-auto">
@@ -181,16 +234,28 @@ const ProfilePage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Nationality
                 </label>
-                <input
-                  type="text"
+
+                <Select
                   value={editForm.nationality}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, nationality: e.target.value })
+                  onValueChange={(value) =>
+                    setEditForm({ ...editForm, nationality: value })
                   }
-                  placeholder="e.g. Nigerian, American"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                >
+                  <SelectTrigger className="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <SelectValue placeholder="Select nationality" />
+                  </SelectTrigger>
+
+                  <SelectContent className="max-h-64 overflow-y-auto">
+                    {countries.map((country) => (
+                      <SelectItem key={country} value={country}>
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
+
+
 
               <div className="flex gap-3 justify-end">
                 <button
@@ -202,7 +267,8 @@ const ProfilePage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
+                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg 
+                  hover:bg-blue-700 transition shadow-md cursor-pointer"
                 >
                   Save Changes
                 </button>
@@ -241,11 +307,18 @@ const ProfilePage: React.FC = () => {
               lastName: user.lastName || "",
               phone: user.phone || "",
               nationality: user.nationality || "",
+              profilePicture: user.profilePicture || "",
+              address: {
+                street: user.address?.street || "",
+                zipcode: user.address?.zipcode || "",
+                city: user.address?.city || "",
+                state: user.address?.state || "",
+                country: user.address?.country || "",
+              },
             });
             setIsEditModalOpen(true);
           }}
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg 
-          hover:bg-blue-700 hover:shadow-lg transition flex items-center gap-2 cursor-pointer"
+          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 hover:shadow-lg transition flex items-center gap-2 cursor-pointer"
         >
           Edit Profile
         </button>

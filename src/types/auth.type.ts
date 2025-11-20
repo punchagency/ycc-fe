@@ -40,4 +40,11 @@ export interface IUser {
     phone: string;
     profilePicture: string;
     role: typeof USER_ROLES[number];
+    address: {
+        street: string;
+        zipcode: string;
+        city: string;
+        state: string;
+        country: string;
+    };
 }

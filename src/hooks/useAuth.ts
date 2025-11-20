@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Session from '@/utils/Session';
 import { clearAuth, setAuth } from '@/store/slices/authSlice';
 import { setUser, clearUser } from '@/store/slices/userSlice';
+import { toast } from 'sonner';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -66,10 +67,33 @@ export const useAuth = () => {
     },
   });
 
+  const updateProfileMutation = useMutation({
+    mutationFn: AuthApi.updateProfile,
+    onSuccess: (response) => {
+      toast.success("Profile updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      // Optional: update cache immediately for instant UI feedback
+      queryClient.setQueryData(['profile'], (old: any) => ({
+        ...old,
+        data: {
+          ...old.data,
+          user: response.data.data.user, // adjust based on your API response shape
+        },
+      }));
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || "Failed to update profile");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
+  });
+
   return {
     login: loginMutation,
     logout: logoutMutation,
     profile: profileQuery,
-    register: registerMutation
+    register: registerMutation,
+    updateProfile: updateProfileMutation
   };
 };
