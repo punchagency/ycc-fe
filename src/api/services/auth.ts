@@ -10,6 +10,7 @@ const AuthApi = {
     changePassword: (data: any) => api.post(API_ENDPOINTS.auth.changePassword, data),
     getProfile: () => api.get(API_ENDPOINTS.auth.getProfile),
     updateProfile: (data: any) => api.put(API_ENDPOINTS.auth.updateProfile, data),
+    updateDistributorProfile: (data: any) => api.put(API_ENDPOINTS.auth.updateDistributorProfile, data),
     activateAccount: (data: any) => api.post(API_ENDPOINTS.auth.activateAccount, data, { authenticated: false }),
     resendActivationCode: (data: any) => api.post(API_ENDPOINTS.auth.resendActivationCode, data, { authenticated: false }),
     forgotPassword: (data: any) => api.post(API_ENDPOINTS.auth.forgotPassword, data, { authenticated: false }),

@@ -40,11 +40,19 @@ export interface IUser {
     phone: string;
     profilePicture: string;
     role: typeof USER_ROLES[number];
-    address: {
+    address?: {
         street: string;
         zipcode: string;
         city: string;
         state: string;
         country: string;
     };
+    // Business-related fields for distributors/manufacturers
+    businessName?: string;
+    businessType?: string;
+    businessEmail?: string;
+    businessPhone?: string;
+    website?: string;
+    taxId?: string;
+    license?: string;
 }
