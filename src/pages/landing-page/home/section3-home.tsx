@@ -14,7 +14,7 @@ const Section3Home: React.FC = () => {
         {/* Content Section */}
         <div className="flex flex-col p-4 md:p-10 gap-5 text-left">
           <div>
-            <h2 className="font-['Plus_Jakarta_Sans'] font-semibold text-[30px] leading-[40px] text-white">
+            <h2 className=" font-semibold text-[30px] leading-[40px] text-white">
               Let our Business Management tools and AI Agentic workflows manage your operations.
             </h2>
           </div>

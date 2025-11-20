@@ -34,7 +34,7 @@ const Section4AboutUs: React.FC = () => {
     <section className="w-full py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
         {/* Section Title */}
-        <h2 className="text-left text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-black font-['Plus_Jakarta_Sans'] mb-16 md:mb-20">
+        <h2 className="text-left text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-black  mb-16 md:mb-20">
           Why Yacht Crew Center
         </h2>
 
@@ -60,7 +60,7 @@ const Section4AboutUs: React.FC = () => {
 
               {/* Text Content */}
               <div className="p-6 md:p-8 lg:p-10 flex flex-col gap-5 bg-gradient-to-b from-white to-[#FAFBFC]">
-                <h3 className="text-2xl md:text-3xl font-medium text-black font-['Plus_Jakarta_Sans'] leading-tight">
+                <h3 className="text-2xl md:text-3xl font-medium text-black  leading-tight">
                   {item.heading}
                 </h3>
                 <p className="text-lg leading-relaxed text-[#373737] font-light">

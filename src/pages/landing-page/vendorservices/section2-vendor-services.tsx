@@ -61,7 +61,7 @@ const Section2VendorServices: React.FC = () => {
           </div>
 
           <h2 className="text-4xl sm:text-5xl lg:text-5xl font-medium leading-tight 
-            tracking-tight text-[#131313] font-['Plus_Jakarta_Sans']">
+            tracking-tight text-[#131313] ">
             Connect with the Global Yachting Network
           </h2>
         </div>

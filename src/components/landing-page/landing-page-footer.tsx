@@ -109,7 +109,7 @@ const LandingPageFooter: React.FC = () => {
                 <div key={idx} className="text-center sm:text-left">
                   {/* Section Title */}
                   <h3
-                    className="font-['Plus_Jakarta_Sans'] font-semibold text-lg sm:text-xl 
+                    className=" font-semibold text-lg sm:text-xl 
                     leading-[120%] text-white uppercase mb-3 sm:mb-4"
                   >
                     {section.title}
@@ -124,7 +124,7 @@ const LandingPageFooter: React.FC = () => {
                             href={link.path}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-['Plus_Jakarta_Sans'] font-normal text-sm sm:text-base 
+                            className=" font-normal text-sm sm:text-base 
                             leading-5 sm:leading-6 text-white no-underline transition-all duration-300 
                             ease-in-out relative inline-block
                             hover:text-[#0487D9] hover:translate-x-1
@@ -139,7 +139,7 @@ const LandingPageFooter: React.FC = () => {
                         <li key={linkIdx}>
                           <Link
                             to={link.path}
-                            className="font-['Plus_Jakarta_Sans'] font-normal text-sm sm:text-base 
+                            className=" font-normal text-sm sm:text-base 
                             leading-5 sm:leading-6 text-white no-underline transition-all duration-300 
                             ease-in-out relative inline-block
                             hover:text-[#0487D9] hover:translate-x-1
@@ -165,7 +165,7 @@ const LandingPageFooter: React.FC = () => {
             {/* Copyright and Legal Links */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start 
               gap-3 sm:gap-2 flex-wrap w-full lg:w-auto">
-              <p className="font-['Plus_Jakarta_Sans'] font-normal text-sm sm:text-base 
+              <p className=" font-normal text-sm sm:text-base 
                 leading-[18px] sm:leading-[21px] text-[#E0E0E0] text-center whitespace-normal 
                 sm:whitespace-nowrap">
                 © {new Date().getFullYear()} SC Yacht Crew Center LLC . All Rights Reserved.
@@ -178,7 +178,7 @@ const LandingPageFooter: React.FC = () => {
                   onClick={() => navigate("/terms-and-conditions")}
                   className="bg-transparent border-none p-0 font-inherit cursor-pointer 
                   text-[#E0E0E0] no-underline transition-all duration-300 ease-in-out 
-                  relative font-['Plus_Jakarta_Sans'] font-normal text-xs sm:text-sm 
+                  relative  font-normal text-xs sm:text-sm 
                   leading-[16px] sm:leading-[18px] whitespace-nowrap
                   hover:text-[#0487D9]
                   after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-[-2px] 
@@ -194,7 +194,7 @@ const LandingPageFooter: React.FC = () => {
                   onClick={() => navigate("/privacy-policy")}
                   className="bg-transparent border-none p-0 font-inherit cursor-pointer 
                   text-[#E0E0E0] no-underline transition-all duration-300 ease-in-out 
-                  relative font-['Plus_Jakarta_Sans'] font-normal text-xs sm:text-sm 
+                  relative  font-normal text-xs sm:text-sm 
                   leading-[16px] sm:leading-[18px] whitespace-nowrap
                   hover:text-[#0487D9]
                   after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-[-2px] 

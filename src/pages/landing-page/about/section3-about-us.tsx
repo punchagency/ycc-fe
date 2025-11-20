@@ -46,7 +46,7 @@ const Section3AboutUs: React.FC = () => {
           >
             {/* Gradient Heading */}
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight tracking-tight">
-              <span className="bg-gradient-to-r from-[#034D92] to-[#0487D9] bg-clip-text text-transparent font-['Plus_Jakarta_Sans']">
+              <span className="bg-gradient-to-r from-[#034D92] to-[#0487D9] bg-clip-text text-transparent ">
                 Our Partnership with Global Yacht Services
               </span>
             </h2>

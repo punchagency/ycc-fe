@@ -48,7 +48,7 @@ const Section2AboutUs: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto md:mb-10">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-[#131313] font-['Plus_Jakarta_Sans']">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight tracking-tight text-[#131313] ">
             What We Offer
           </h2>
         </div>
@@ -82,7 +82,7 @@ const Section2AboutUs: React.FC = () => {
 
                 {/* Content */}
                 <div className="flex flex-col gap-5 items-center text-center">
-                  <h3 className="text-2xl md:text-3xl font-medium text-[#131313] font-['Plus_Jakarta_Sans'] leading-tight">
+                  <h3 className="text-2xl md:text-3xl font-medium text-[#131313]  leading-tight">
                     {feature.title}
                   </h3>
                   <p className="text-lg text-[#373737] leading-relaxed font-light">
