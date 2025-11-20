@@ -1,7 +1,9 @@
 // landing-page-header.tsx
 import logo from "../../assets/images/icons/YCC-navbar-icon.png";
+import profileUpload from "../../assets/images/profile-upload.png";
 import * as React from "react";
 import { useState, useEffect } from "react";
+import * as Sentry from '@sentry/react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu,
@@ -15,6 +17,9 @@ import {
   Menu as MenuIcon,
   ArrowLeft, X,
 } from "lucide-react";
+import { isLoggedIn } from "../../utils/IsLoggedIn";
+import { useReduxAuth } from "../../hooks/useReduxAuth";
+import { setSentryUser } from "../../config/sentry";
 
 interface NavOption {
   title: string;
@@ -80,6 +85,63 @@ const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
   const toggleDrawer = () => setMobileOpen(!mobileOpen);
   const toggleMobileMenu = () => setMobileOpen(prev => !prev);
   const closeMobileMenu = () => setMobileOpen(false);
+
+  const closeTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMouseEnter = () => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+      closeTimeout.current = null;
+    }
+    setOpenMenu(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Delay closing by 3 seconds
+    closeTimeout.current = setTimeout(() => {
+      setOpenMenu(false);
+      closeTimeout.current = null;
+    }, 3000);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (closeTimeout.current) {
+        clearTimeout(closeTimeout.current);
+        closeTimeout.current = null;
+      }
+    };
+  }, []);
+
+  
+    const isAuthenticated = isLoggedIn();
+    const { user } = useReduxAuth();
+
+    const [openMenu, setOpenMenu] = useState(false);
+
+    const getDashboardLink = () => {
+      switch (user?.role) {
+        case "admin":
+          return "/dashboard"; // admin has multiple, but default to category or dashboard
+        case "manufacturer":
+        case "distributor":
+        case "user":
+          return "/dashboard";
+        default:
+          return "/dashboard";
+      }
+    };
+
+    useEffect(() => {
+      if (import.meta.env.PROD && user?._id && user?.email) {
+        setSentryUser({
+          id: user._id,
+          email: user.email,
+          username: `${user.firstName} ${user.lastName}`,
+        });
+      }
+    }, [user]);
+
 
   return (
     <>
@@ -180,20 +242,71 @@ const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
         </div>
 
         {/* Desktop CTA Buttons */}
-        <div className="hidden md:flex gap-4 items-center">
-          <Link
-            to="/login"
-            className="bg-transparent text-white border-2 border-[#0487D9] rounded-lg font-bold text-base h-10 px-6 flex items-center justify-center transition-all duration-200 hover:bg-[#0487D9]/10 hover:-translate-y-0.5 hover:shadow-lg"
-          >
-            Sign In
-          </Link>
-          <Link
-            to="/get-started"
-            className="relative bg-gradient-to-r from-[#034D92] to-[#0487D9] text-white rounded-lg font-bold text-base h-10 px-6 flex items-center justify-center overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:transition-transform before:duration-700 hover:before:translate-x-full"
-          >
-            <span className="relative z-10">Join Now</span>
-          </Link>
-        </div>
+        {/* Desktop User Account Section */}
+          <div className="hidden md:flex items-center gap-4 relative">
+            {!isAuthenticated ? (
+              <>
+                {/* If NOT logged in: show buttons */}
+                <Link
+                  to="/login"
+                  className="bg-transparent text-white border-2 border-[#0487D9] rounded-lg font-bold text-base h-10 px-6 flex items-center justify-center transition-all duration-200 hover:bg-[#0487D9]/10 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/get-started"
+                  className="relative bg-gradient-to-r from-[#034D92] to-[#0487D9] text-white rounded-lg font-bold text-base h-10 px-6 flex items-center justify-center overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl before:absolute before:inset-0 before:bg-white/20 before:-translate-x-full before:transition-transform before:duration-700 hover:before:translate-x-full"
+                >
+                  <span className="relative z-10">Join Now</span>
+                </Link>
+              </>
+            ) : (
+              <>
+                {/* If logged in: Show avatar + name + dropdown */}
+                <div
+                  className="relative hidden md:flex items-center gap-4"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className="flex items-center gap-2 cursor-pointer">
+                    <img
+                      src={ user?.profilePicture || profileUpload }
+                      alt="user"
+                      className="w-10 h-10 rounded-full object-cover border border-white"
+                    />
+
+                    <span className="text-white font-semibold capitalize">
+                      {user?.firstName}
+                    </span>
+                  </div>
+
+                  {openMenu && (
+                    <div className="absolute right-0 top-full mt-3 w-48 bg-white shadow-lg rounded-lg py-2 z-[1500]">
+                      <Link
+                        to={getDashboardLink()}
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        Dashboard
+                      </Link>
+
+                        <button
+                          onClick={() => {
+                            localStorage.clear();
+                            window.location.href = "/logout";
+                          }}
+                          className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                </div>
+
+
+              </>
+            )}
+          </div>
+
       </nav>
 
       {/* Mobile Drawer */}

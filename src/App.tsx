@@ -30,6 +30,8 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const DistributorDashboard = lazy(() => import("./pages/distributor/DistributorDashboard"));
 const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/ManufacturerDashboard"));
 
+const Profile = lazy(() => import("./pages/dashboard/profile/Profile"));
+
 const Category = lazy(() => import("./pages/admin/category/Category"));
 const DistributorServices = lazy(() => import("./pages/distributor/service/Service"));
 
@@ -111,7 +113,11 @@ const App: React.FC = () => {
                 <Route path="/dashboard" element={<AdminDashboard />} />
                 <Route path="/category" element={<Category />} />
               </Route>
-
+            )}
+            {isAuthenticated && (
+              <Route element={<DashboardLayout />}>
+                <Route path="/profile" element={<Profile />} />
+              </Route>
             )}
           </SentryRoutes>
         </Suspense>

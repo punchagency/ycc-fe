@@ -86,7 +86,7 @@ const Category: React.FC = () => {
                     <h1 className="text-3xl font-bold">Category Management</h1>
                     <p className="text-muted-foreground">Manage your categories for products and services.</p>
                 </div>
-                <Button onClick={openCreateDialog}>
+                <Button onClick={openCreateDialog} className="cursor-pointer">
                     <Plus className="mr-2 h-5 w-5" />
                     Add Category
                 </Button>
@@ -176,7 +176,7 @@ const Category: React.FC = () => {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        className="hover:bg-primary/90 hover:text-white"
+                                        className="hover:bg-primary/90 hover:text-white cursor-pointer"
                                         onClick={() => openEditDialog(category)}
                                     >
                                         <Pencil className="h-4 w-4 mr-2" />
@@ -186,7 +186,8 @@ const Category: React.FC = () => {
                                         variant="outline"
                                         size="sm"
                                         onClick={() => openDeleteDialog(category)}
-                                        className="text-destructive border-destructive hover:text-white hover:bg-destructive/90"
+                                        className="text-destructive border-destructive hover:text-white 
+                                            hover:bg-destructive/90 cursor-pointer"
                                     >
                                         <Trash2 className="h-4 w-4 mr-2" />
                                         Delete
