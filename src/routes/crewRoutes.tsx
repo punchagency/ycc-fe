@@ -6,6 +6,7 @@ const DashboardLayout = lazy(() => import('../layout/dashboard-layout'));
 
 // Lazy load crew/user pages
 const UserDashboard = lazy(() => import('../pages/user/UserDashboard'));
+const Settings = lazy(() => import('../pages/crew/Settings'));
 
 export const crewRoutes: RouteObject[] = [
   {
@@ -14,6 +15,10 @@ export const crewRoutes: RouteObject[] = [
       {
         path: '/dashboard',
         element: <UserDashboard />,
+      },
+      {
+        path: '/crew/settings',
+        element: <Settings />,
       },
       // Add more crew-specific routes here as your application grows
     ],
