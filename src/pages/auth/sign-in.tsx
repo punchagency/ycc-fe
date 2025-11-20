@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import logo from '../../assets/images/YCC-home-banner-new.png';
 import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 type FormState = {
   email: string;
@@ -103,7 +105,7 @@ const SignInPage: React.FC = () => {
               >
                 Email address
               </label>
-              <input
+              <Input
                 id='email'
                 type='email'
                 required
@@ -121,7 +123,7 @@ const SignInPage: React.FC = () => {
               >
                 Password
               </label>
-              <input
+              <Input
                 id='password'
                 type='password'
                 required
@@ -144,13 +146,14 @@ const SignInPage: React.FC = () => {
               </p>
             )}
 
-            <button
+            <Button
               type='submit'
               disabled={login.isPending}
-              className='w-full rounded-lg bg-sky-600 px-4 py-2.5 text-center font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
+              size="lg"
+              className='w-full rounded-lg px-4 py-2.5 text-center font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
             >
               {login.isPending ? 'Signing in...' : 'Sign in'}
-            </button>
+            </Button>
           </form>
 
           <p className='text-sm text-slate-500'>
