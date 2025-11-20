@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import logo from '../../assets/images/YCC-home-banner-new.png';
+import { toast } from 'sonner';
 
 type FormState = {
   email: string;
@@ -33,21 +34,15 @@ const SignInPage: React.FC = () => {
     setFeedback(null);
 
     try {
-      await login.mutateAsync(formState);
-      setFeedback({
-        type: 'success',
-        message: 'Signed in successfully. Redirecting...',
-      });
+      const response = await login.mutateAsync(formState);
+      const successMessage = response?.data?.message || 'Signed in successfully.';
+      toast.success(successMessage);
+      setFeedback({ type: 'success', message: successMessage + ' Redirecting...' });
       setTimeout(() => navigate('/dashboard'), 500);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'Unable to sign in. Please try again.';
-      setFeedback({
-        type: 'error',
-        message,
-      });
+    } catch (error: any) {
+      const message = error?.response?.data?.message || (error instanceof Error ? error.message : 'Unable to sign in. Please try again.');
+      toast.error(message);
+      setFeedback({ type: 'error', message });
     }
   };
 

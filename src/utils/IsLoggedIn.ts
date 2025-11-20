@@ -11,9 +11,8 @@ export const isLoggedIn = () => {
     }
     try {
         const decoded: Record<string, any> = jwtDecode(token);
-
         const isExpired = decoded.exp <= Math.floor(Date.now() / 1000);
-        if (isExpired || !decoded.id) {
+        if (isExpired || !decoded.userId) {
             return false;
         }
     } catch {
