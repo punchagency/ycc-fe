@@ -22,7 +22,7 @@ const Section1VendorServices: React.FC = () => {
           {/* Right: Content */}
           <div className="flex flex-col gap-8 md:pl-4">
             {/* Heading */}
-            <h2 className="text-4xl sm:text-5xl lg:text-5xl font-medium text-[#131313] leading-tight tracking-tight font-['Plus_Jakarta_Sans']">
+            <h2 className="text-4xl sm:text-5xl lg:text-5xl font-medium text-[#131313] leading-tight tracking-tight ">
               Managing your business just got easier with the{" "}
               <span className="font-semibold">Yacht Crew Center</span>.
             </h2>

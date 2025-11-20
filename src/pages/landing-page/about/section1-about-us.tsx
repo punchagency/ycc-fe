@@ -23,7 +23,7 @@ const Section1AboutUs: React.FC = () => {
 
           {/* Text Content - Right Side */}
           <div className="md:col-span-5 order-1 md:order-2 flex flex-col gap-8 text-center md:text-left">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight tracking-tight text-[#131313] font-['Plus_Jakarta_Sans']">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight tracking-tight text-[#131313] ">
               Who We Are
             </h2>
 
