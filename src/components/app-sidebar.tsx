@@ -40,7 +40,7 @@ const getRoleBasedMenuItems = (role: string) => {
       { title: "Calendar", url: "/calendar", icon: Calendar },
       { title: "Transactions", url: "/transactions", icon: DollarSign },
       { title: "Notifications", url: "/notifications", icon: Bell },
-      { title: "Settings", url: "/settings", icon: Settings },
+      { title: "Settings", url: "/distributor/settings", icon: Settings },
     ],
     user: [
       { title: "Dashboard", url: "/crew/dashboard", icon: LayoutDashboard },

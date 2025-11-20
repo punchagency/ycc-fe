@@ -7,6 +7,7 @@ const API_ENDPOINTS = {
         changePassword: '/api/v2/auth/change-password',
         getProfile: '/api/v2/auth/profile',
         updateProfile: '/api/v2/auth/profile',
+        updateDistributorProfile: '/api/v2/auth/distributor-profile',
         activateAccount: '/api/v2/auth/activate-account',
         resendActivationCode: '/api/v2/auth/resend-activation-code',
         forgotPassword: '/api/v2/auth/forgot-password',
