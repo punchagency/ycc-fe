@@ -17,7 +17,7 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+// import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
@@ -33,10 +33,10 @@ const getRoleBasedMenuItems = (role: string) => {
   const menuItems = {
     distributor: [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-      { title: "Bookings", url: "/bookings", icon: Calendar },
-      { title: "Orders", url: "/orders", icon: ShoppingCart },
       { title: "Service Management", url: "/services", icon: Wrench },
       { title: "Inventory Management", url: "/inventory", icon: Package },
+      { title: "Bookings", url: "/bookings", icon: Calendar },
+      { title: "Orders", url: "/orders", icon: ShoppingCart },
       { title: "Calendar", url: "/calendar", icon: Calendar },
       { title: "Transactions", url: "/transactions", icon: DollarSign },
       { title: "Notifications", url: "/notifications", icon: Bell },
