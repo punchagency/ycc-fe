@@ -10,6 +10,13 @@ export interface RegisterInput {
     nationality: string;
     profilePicture: File | null;
     role: typeof USER_ROLES[number];
+    address: {
+        street: string;
+        zipcode: string;
+        city: string;
+        state: string;
+        country: string;
+    };
     businessName?: string;
     businessType?: string;
     businessEmail?: string;

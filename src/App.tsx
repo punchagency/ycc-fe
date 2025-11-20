@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import * as Sentry from '@sentry/react';
 import { Toaster } from "./components/ui/sonner";
 
@@ -30,11 +30,14 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const DistributorDashboard = lazy(() => import("./pages/distributor/DistributorDashboard"));
 const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/ManufacturerDashboard"));
 
+const Category = lazy(() => import("./pages/admin/category/Category"));
+
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import { useReduxAuth } from "./hooks/useReduxAuth";
 import { useAuth } from "./hooks/useAuth";
 import { Loading } from "./components/ui/Loading";
+import { isLoggedIn } from "./utils/IsLoggedIn";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
@@ -42,7 +45,8 @@ const App: React.FC = () => {
   // Initialize auth state by fetching profile on app load
   useAuth();
 
-  const { user, isAuthenticated } = useReduxAuth();
+  const { user } = useReduxAuth();
+  const isAuthenticated = isLoggedIn();
 
   useEffect(() => {
     if (import.meta.env.PROD && user?._id && user?.email) {
@@ -62,6 +66,7 @@ const App: React.FC = () => {
         >
           <SentryRoutes>
             {/* Unauthenticated routes - always accessible */}
+            <Route path="*" element={<Navigate to="/" />} />
             <Route element={<LandingPageLayout />}>
               {/* LANDING PAGE */}
               <Route path="/" element={<Home />} />
@@ -79,15 +84,9 @@ const App: React.FC = () => {
               <Route path='/login' element={<SignInPage />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/get-started' element={<RegisterPage />} />
-            </Route>
-    
+            </Route>    
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<UserDashboard />} />
-            </Route>
-
             {/* Authenticated routes with sidebar layout */}
             {/* Authenticated routes based on user role */}
             {isAuthenticated && user?.role === 'user' && (
@@ -108,6 +107,7 @@ const App: React.FC = () => {
             {isAuthenticated && user?.role === 'admin' && (
               <Route element={<DashboardLayout />}>
                 <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="/category" element={<Category />} />
               </Route>
 
             )}

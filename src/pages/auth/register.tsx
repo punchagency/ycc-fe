@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import type { RegisterInput } from '../../types/auth.type';
 import logo from '../../assets/images/YCC-home-banner-new.png';
+import { toast } from 'sonner';
 
 type FormState = RegisterInput;
 
@@ -16,6 +17,13 @@ const initialFormState: FormState = {
   role: 'user',
   phone: '',
   nationality: '',
+  address: {
+    street: '',
+    zipcode: '',
+    city: '',
+    state: '',
+    country: '',
+  },
   businessName: '',
   businessType: '',
   businessEmail: '',
@@ -29,8 +37,14 @@ const initialFormState: FormState = {
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState<FormState>(initialFormState);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [feedback, setFeedback] = useState<FeedbackState>(null);
   const { register } = useAuth();
+
+  const isBusinessRole = useMemo(
+    () => formState.role === 'distributor' || formState.role === 'manufacturer',
+    [formState.role]
+  );
 
   const handleInputChange =
     (field: keyof FormState, transform?: (value: string) => string) =>
@@ -56,22 +70,54 @@ const RegisterPage: React.FC = () => {
     event.preventDefault();
     setFeedback(null);
 
+    if (!formState.firstName || !formState.lastName || !formState.email || !formState.password) {
+      toast.error('Please fill required fields: first name, last name, email, password.');
+      return;
+    }
+    if (!formState.address.street || !formState.address.zipcode || !formState.address.city || !formState.address.state || !formState.address.country) {
+      toast.error('Please provide your full address details.');
+      return;
+    }
+
+    if (isBusinessRole && currentStep === 1) {
+      setCurrentStep(2);
+      return;
+    }
+
     try {
-      await register.mutateAsync(formState);
-      setFeedback({
-        type: 'success',
-        message: 'Registration successful. Redirecting...',
-      });
-      setTimeout(() => navigate('/dashboard'), 800);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'Unable to register. Please try again.';
-      setFeedback({
-        type: 'error',
-        message,
-      });
+      const fd = new FormData();
+      fd.append('firstName', formState.firstName);
+      fd.append('lastName', formState.lastName);
+      fd.append('email', formState.email);
+      fd.append('password', formState.password);
+      if (formState.phone) fd.append('phone', formState.phone);
+      if (formState.nationality) fd.append('nationality', formState.nationality);
+      fd.append('role', formState.role);
+      fd.append('address[street]', formState.address.street);
+      fd.append('address[zipcode]', formState.address.zipcode);
+      fd.append('address[city]', formState.address.city);
+      fd.append('address[state]', formState.address.state);
+      fd.append('address[country]', formState.address.country);
+      if (formState.profilePicture) fd.append('profilePicture', formState.profilePicture);
+      if (isBusinessRole) {
+        if (formState.businessName) fd.append('businessName', formState.businessName);
+        if (formState.businessType) fd.append('businessType', formState.businessType);
+        if (formState.businessEmail) fd.append('businessEmail', formState.businessEmail);
+        if (formState.businessPhone) fd.append('businessPhone', formState.businessPhone);
+        if (formState.website) fd.append('website', formState.website);
+        if (formState.taxId) fd.append('taxId', formState.taxId);
+        if (formState.license) fd.append('license', formState.license);
+      }
+
+      const response = await register.mutateAsync(fd);
+      const successMessage = response?.data?.message || 'Registration successful. Please check your email for activation code.';
+      toast.success(successMessage);
+      setFeedback({ type: 'success', message: successMessage });
+      setTimeout(() => navigate('/login'), 1500);
+    } catch (error: any) {
+      const message = error?.response?.data?.message || (error instanceof Error ? error.message : 'Unable to register. Please try again.');
+      toast.error(message);
+      setFeedback({ type: 'error', message });
     }
   };
 
@@ -147,6 +193,20 @@ const RegisterPage: React.FC = () => {
           </div>
 
           <form className='space-y-4' onSubmit={handleSubmit}>
+            <div className='flex items-center justify-between text-sm text-slate-600'>
+              <div className='flex items-center gap-2'>
+                <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full ${currentStep >= 1 ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-600'}`}>1</span>
+                <span>Account details</span>
+              </div>
+              {isBusinessRole && (
+                <div className='flex items-center gap-2'>
+                  <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full ${currentStep === 2 ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-600'}`}>2</span>
+                  <span>Business information</span>
+                </div>
+              )}
+            </div>
+
+            {currentStep === 1 && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -184,7 +244,9 @@ const RegisterPage: React.FC = () => {
                 />
               </div>
             </div>
+            )}
 
+            {currentStep === 1 && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -221,7 +283,9 @@ const RegisterPage: React.FC = () => {
                 />
               </div>
             </div>
+            )}
 
+            {currentStep === 1 && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -251,17 +315,21 @@ const RegisterPage: React.FC = () => {
                 <select
                   id='role'
                   value={formState.role}
-                  onChange={handleInputChange('role')}
+                  onChange={(e) => {
+                    setCurrentStep(1);
+                    handleInputChange('role')(e);
+                  }}
                   className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30'
                 >
-                  <option value='crew'>Crew Member</option>
+                  <option value='user'>User</option>
                   <option value='distributor'>Distributor</option>
                   <option value='manufacturer'>Manufacturer</option>
-                  <option value='service_provider'>Service Provider</option>
                 </select>
               </div>
             </div>
+            )}
 
+            {currentStep === 1 && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -299,7 +367,39 @@ const RegisterPage: React.FC = () => {
                 </p>
               </div>
             </div>
+            )}
 
+            {currentStep === 1 && (
+            <div className='grid gap-4 md:grid-cols-2'>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-slate-700' htmlFor='street'>Street *</label>
+                <input id='street' type='text' required value={formState.address.street} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, street: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='123 Marina Blvd' />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-slate-700' htmlFor='zipcode'>Zipcode *</label>
+                <input id='zipcode' type='text' required value={formState.address.zipcode} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, zipcode: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='90210' />
+              </div>
+            </div>
+            )}
+
+            {currentStep === 1 && (
+            <div className='grid gap-4 md:grid-cols-3'>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-slate-700' htmlFor='city'>City *</label>
+                <input id='city' type='text' required value={formState.address.city} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, city: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='Miami' />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-slate-700' htmlFor='state'>State *</label>
+                <input id='state' type='text' required value={formState.address.state} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, state: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='FL' />
+              </div>
+              <div className='space-y-2'>
+                <label className='text-sm font-medium text-slate-700' htmlFor='country'>Country *</label>
+                <input id='country' type='text' required value={formState.address.country} onChange={(e) => setFormState((prev) => ({ ...prev, address: { ...prev.address, country: e.target.value } }))} className='w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-slate-900 placeholder-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400/30' placeholder='United States' />
+              </div>
+            </div>
+            )}
+
+            {currentStep === 2 && isBusinessRole && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -335,7 +435,9 @@ const RegisterPage: React.FC = () => {
                 />
               </div>
             </div>
+            )}
 
+            {currentStep === 2 && isBusinessRole && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -371,7 +473,9 @@ const RegisterPage: React.FC = () => {
                 />
               </div>
             </div>
+            )}
 
+            {currentStep === 2 && isBusinessRole && (
             <div className='grid gap-4 md:grid-cols-2'>
               <div className='space-y-2'>
                 <label
@@ -407,7 +511,9 @@ const RegisterPage: React.FC = () => {
                 />
               </div>
             </div>
+            )}
 
+            {currentStep === 2 && isBusinessRole && (
             <div className='space-y-2'>
               <label
                 className='text-sm font-medium text-slate-700'
@@ -424,6 +530,7 @@ const RegisterPage: React.FC = () => {
                 placeholder='DOC / MLC, etc.'
               />
             </div>
+            )}
 
             {feedback && (
               <p
@@ -437,13 +544,33 @@ const RegisterPage: React.FC = () => {
             )}
 
             <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
-              <button
-                type='submit'
-                disabled={register.isPending}
-                className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
-              >
-                {register.isPending ? 'Creating account...' : 'Create account'}
-              </button>
+              {!isBusinessRole && (
+                <button
+                  type='submit'
+                  disabled={register.isPending}
+                  className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
+                >
+                  {register.isPending ? 'Creating account...' : 'Create account'}
+                </button>
+              )}
+              {isBusinessRole && currentStep === 1 && (
+                <button
+                  type='submit'
+                  disabled={register.isPending}
+                  className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
+                >
+                  Next
+                </button>
+              )}
+              {isBusinessRole && currentStep === 2 && (
+                <button
+                  type='submit'
+                  disabled={register.isPending}
+                  className='rounded-lg bg-sky-600 px-6 py-2.5 font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70'
+                >
+                  {register.isPending ? 'Creating account...' : 'Create account'}
+                </button>
+              )}
 
               <button
                 type='button'
