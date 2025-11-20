@@ -92,7 +92,7 @@ const LandingPageFooter: React.FC = () => {
                 <button
                   className="w-full sm:w-auto px-4 sm:px-5 py-2.5 sm:py-3 text-white font-inter font-semibold 
                   text-sm sm:text-base leading-[17px] sm:leading-[19px] 
-                  flex justify-center items-center rounded-lg transition-all duration-300 ease-in-out
+                  flex justify-center items-center rounded-sm transition-all duration-300 ease-in-out
                   hover:scale-105 hover:shadow-lg cursor-pointer"
                   style={{ background: linearGradient }}
                 >
