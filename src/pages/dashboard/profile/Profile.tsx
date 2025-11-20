@@ -13,6 +13,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import countries from "react-phone-number-input/locale/en.json";
 // import metadata from "react-phone-number-input/metadata.min.json";
+import { Edit2, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 
 const ProfilePage: React.FC = () => {
@@ -21,7 +25,7 @@ const ProfilePage: React.FC = () => {
   // Profile picture states
   const [showPicDrawer, setShowPicDrawer] = useState(false);
   const [showPicPreview, setShowPicPreview] = useState(false);
-  const [picLoading, setPicLoading] = useState(false);
+  const [picLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const picRef = useRef<HTMLImageElement>(null);
   const [countries, setCountries] = useState<string[]>([]);
@@ -105,41 +109,45 @@ const ProfilePage: React.FC = () => {
           >
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold">Profile Picture</h3>
-              <button
+              <Button
+                variant={"ghost"}
                 onClick={() => setShowPicDrawer(false)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
+                className="text-muted-foreground hover:text-gray-700 text-2xl"
               >
-                ×
-              </button>
+                <X />
+              </Button>
             </div>
 
-            <button
+            <Button
+              variant={"secondary"}
+              onClick={handleViewPicture}
+              className="w-full mb-3 px-4 py-3 text-left"
+            >
+              View Current Picture
+            </Button>
+            <Button
               onClick={handleChangePicture}
               disabled={picLoading}
-              className="w-full mb-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition disabled:opacity-50 flex items-center gap-3"
+              className="w-full mb-3 px-4 py-3 text-left"
             >
               Upload New Picture
-            </button>
-            <input
+            </Button>
+            <Input
               type="file"
               accept="image/*"
               ref={fileInputRef}
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
-            <button
-              onClick={handleViewPicture}
-              className="w-full mb-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-100 rounded-lg transition flex items-center gap-3"
-            >
-              View Current Picture
-            </button>
-            <button
+            
+            <Button
+              variant={"destructive"}
               onClick={handleRemovePicture}
               disabled={picLoading}
-              className="w-full px-4 py-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition disabled:opacity-50 flex items-center gap-3"
+              className="w-full px-4 py-3 text-left rounded-lg transition disabled:opacity-50 flex items-center gap-3"
             >
               Remove Picture
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -156,12 +164,12 @@ const ProfilePage: React.FC = () => {
               alt="Profile Preview"
               className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
             />
-            <button
+            <Button
               onClick={() => setShowPicPreview(false)}
               className="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full hover:bg-black/70 transition"
             >
-              ×
-            </button>
+              <X />
+            </Button>
           </div>
         </div>
       )}
@@ -174,13 +182,14 @@ const ProfilePage: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Edit Profile</h2>
-              <button
+              <h2 className="text-2xl font-bold ">Edit Profile</h2>
+              <Button
+                variant={"ghost"}
                 onClick={() => setIsEditModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
+                className="text-muted-foreground hover:text-gray-700 text-2xl"
               >
-                ×
-              </button>
+                <X />
+              </Button>
             </div>
 
             <form onSubmit={handleEditSubmit}>
@@ -189,7 +198,7 @@ const ProfilePage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     First Name
                   </label>
-                  <input
+                  <Input
                     type="text"
                     required
                     value={editForm.firstName}
@@ -203,7 +212,7 @@ const ProfilePage: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Last Name
                   </label>
-                  <input
+                  <Input
                     type="text"
                     required
                     value={editForm.lastName}
@@ -219,7 +228,7 @@ const ProfilePage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Phone Number
                 </label>
-                <input
+                <Input
                   type="tel"
                   value={editForm.phone}
                   onChange={(e) =>
@@ -234,7 +243,6 @@ const ProfilePage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Nationality
                 </label>
-
                 <Select
                   value={editForm.nationality}
                   onValueChange={(value) =>
@@ -258,20 +266,21 @@ const ProfilePage: React.FC = () => {
 
 
               <div className="flex gap-3 justify-end">
-                <button
+                <Button
                   type="button"
+                  variant={"outline"}
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-5 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                  className=""
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
-                  className="px-6 py-2.5 bg-blue-600 text-white rounded-lg 
-                  hover:bg-blue-700 transition shadow-md cursor-pointer"
+
+                  className=""
                 >
                   Save Changes
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -289,18 +298,18 @@ const ProfilePage: React.FC = () => {
             className="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition-transform duration-200 object-cover"
           />
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-semibold">
               {user.firstName} {user.lastName}
             </h1>
-            <p className="text-gray-600 text-lg">{user.email}</p>
-            <span className="mt-2 inline-block px-4 py-1.5 text-sm font-semibold bg-blue-100 text-blue-800 rounded-full">
-              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-            </span>
+            <p className="text-muted-foreground text-lg">{user.email}</p>
+            <Badge className=" text-sm font-semibold rounded-full capitalize">
+              {user.role}
+            </Badge>
           </div>
         </div>
 
         {/* Edit Profile Button */}
-        <button
+        <Button
           onClick={() => {
             setEditForm({
               firstName: user.firstName || "",
@@ -318,50 +327,51 @@ const ProfilePage: React.FC = () => {
             });
             setIsEditModalOpen(true);
           }}
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 hover:shadow-lg transition flex items-center gap-2 cursor-pointer"
+          className="cursor-pointer"
         >
+          <Edit2 />
           Edit Profile
-        </button>
+        </Button>
       </div>
 
       {/* Personal Information Section */}
-      <Card className="bg-white border border-gray-100 shadow-lg rounded-xl">
-        <CardHeader>
-          <CardTitle className="text-xl font-bold text-gray-800">
+      <Card className="py-3">
+        <CardHeader className="px-3">
+          <CardTitle className="text-xl font-semibold ">
             Personal Information
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg py-4">
+        <CardContent className="grid grid-cols-1 px-3 md:grid-cols-2 gap-8 text-lg ">
           <div>
-            <p className="text-gray-500 text-sm font-medium">Full Name</p>
-            <p className="text-gray-800 font-semibold mt-1">
+            <p className="text-muted-foreground text-sm font-medium">Full Name</p>
+            <p className=" font-semibold mt-1">
               {user.firstName} {user.lastName}
             </p>
           </div>
 
           <div>
-            <p className="text-gray-500 text-sm font-medium">Nationality</p>
-            <p className="text-gray-800 font-semibold mt-1">
+            <p className="text-muted-foreground text-sm font-medium">Nationality</p>
+            <p className=" font-semibold mt-1">
               {user.nationality || "Not set"}
             </p>
           </div>
 
           <div>
-            <p className="text-gray-500 text-sm font-medium">Email Address</p>
-            <p className="text-gray-800 font-semibold mt-1">{user.email}</p>
+            <p className="text-muted-foreground text-sm font-medium">Email Address</p>
+            <p className=" font-semibold mt-1">{user.email}</p>
           </div>
 
           <div>
-            <p className="text-gray-500 text-sm font-medium">Phone Number</p>
-            <p className="text-gray-800 font-semibold mt-1">
+            <p className="text-muted-foreground text-sm font-medium">Phone Number</p>
+            <p className=" font-semibold mt-1">
               {user.phone || "Not set"}
             </p>
           </div>
         </CardContent>
 
-        <CardFooter className="border-t border-gray-200 mt-4 py-6">
-          <p className="text-sm text-gray-500 leading-relaxed">
+        <CardFooter className="border-t border-gray-200 pt-3 px-3">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             <strong>Reply-To Email:</strong> This will be used for calendar invites.
             Default is your account email:
             <span className="font-medium text-gray-700"> {user.email}</span>

@@ -19,6 +19,13 @@ const API_ENDPOINTS = {
         getCategory: '/api/v2/category/:id',
         updateCategory: '/api/v2/category/:id',
         deleteCategory: '/api/v2/category/:id'
+    },
+    service: {
+        createService: '/api/v2/service',
+        getServicesByBusiness: '/api/v2/service/business',
+        getService: '/api/v2/service/:id',
+        updateService: '/api/v2/service/:id',
+        deleteService: '/api/v2/service/:id'
     }
 };
 
