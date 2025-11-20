@@ -27,8 +27,13 @@ const CategoryApi = {
     },
     deleteCategory: (id: string) =>
         api.delete(API_ENDPOINTS.category.deleteCategory.replace(':id', id)),
-    getCategories: () =>
-        api.get(API_ENDPOINTS.category.getCategories),
+    getCategories: (data: {type?: 'service' | 'product' | null, isApproved?: boolean}) => {
+        const params = Object.fromEntries(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            Object.entries(data).filter(([_, v]) => v !== undefined)
+        );
+        return api.get(API_ENDPOINTS.category.getCategories, { params });
+    },
     getCategory: (id: string) =>
         api.get(API_ENDPOINTS.category.getCategory.replace(':id', id)),
 };

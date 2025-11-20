@@ -33,6 +33,7 @@ const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/Manufactur
 const Profile = lazy(() => import("./pages/dashboard/profile/Profile"));
 
 const Category = lazy(() => import("./pages/admin/category/Category"));
+const DistributorServices = lazy(() => import("./pages/distributor/service/Service"));
 
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
@@ -99,6 +100,7 @@ const App: React.FC = () => {
             {isAuthenticated && user?.role === 'distributor' && (
               <Route element={<DashboardLayout />}>
                 <Route path="/dashboard" element={<DistributorDashboard />} />
+                <Route path="/services" element={<DistributorServices />} />
               </Route>
             )}
             {isAuthenticated && user?.role === 'manufacturer' && (
@@ -119,7 +121,7 @@ const App: React.FC = () => {
             )}
           </SentryRoutes>
         </Suspense>
-        <Toaster richColors={true} />
+        <Toaster richColors={true} position="top-right" />
       </Router>
     </ErrorBoundary>
   );
