@@ -9,6 +9,7 @@ import CategoryDialog from '@/pages/admin/category/components/category-dialog'
 import { toast } from 'sonner'
 import { Switch } from '@/components/ui/switch'
 import { Skeleton } from '@/components/ui/skeleton'
+import APIErrorResponse from '@/utils/APIErrorResponse'
 
 const Category: React.FC = () => {
     const [categories, setCategories] = React.useState<ICategory[]>([])
@@ -17,7 +18,7 @@ const Category: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = React.useState<ICategory | null>(null)
     const [categoryToDelete, setCategoryToDelete] = React.useState<ICategory | null>(null)
 
-    const { categories: categoriesQuery, createCategory, updateCategory, deleteCategory } = useCategories()
+    const { categories: categoriesQuery, createCategory, updateCategory, deleteCategory } = useCategories({})
 
     const fetchCategories = async () => {
         const result = await categoriesQuery.data?.data.data
@@ -35,8 +36,7 @@ const Category: React.FC = () => {
             await createCategory.mutateAsync(data)
             toast.success('Category created successfully')
         } catch (error) {
-            toast.error('Failed to create category')
-            console.error('Error creating category:', error)
+            APIErrorResponse(error, 'Failed to create category')
         }
     }
 
@@ -46,8 +46,7 @@ const Category: React.FC = () => {
             await updateCategory.mutateAsync({ id: selectedCategory._id, data })
             toast.success('Category updated successfully')
         } catch (error) {
-            toast.error('Failed to update category')
-            console.error('Error updating category:', error)
+            APIErrorResponse(error, 'Failed to update category');
         }
     }
 
@@ -57,8 +56,7 @@ const Category: React.FC = () => {
             await deleteCategory.mutateAsync(categoryToDelete._id)
             toast.success('Category deleted successfully')
         } catch (error) {
-            toast.error('Failed to delete category')
-            console.error('Error deleting category:', error)
+            APIErrorResponse(error, 'Failed to delete category');
         }
     }
 
@@ -89,7 +87,7 @@ const Category: React.FC = () => {
                     <p className="text-muted-foreground">Manage your categories for products and services.</p>
                 </div>
                 <Button onClick={openCreateDialog}>
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus className="mr-2 h-5 w-5" />
                     Add Category
                 </Button>
             </div>

@@ -8,6 +8,7 @@ import {
   useSidebar
 } from "@/components/ui/sidebar"
 import AppLogo from '@/assets/images/logo.png'
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function TeamSwitcher({
   teams,
@@ -21,6 +22,8 @@ export function TeamSwitcher({
   const [activeTeam] = React.useState(teams[0])
   const { state } = useSidebar()
   const isCollapsed = state === "collapsed"
+  const location = useLocation();
+  const navigate = useNavigate();
 
   if (!activeTeam) {
     return null
@@ -29,17 +32,24 @@ export function TeamSwitcher({
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${isCollapsed ? 'justify-start' : 'justify-center my-3'}`}
-            >
-              <img 
-                src={AppLogo} 
-                alt="logo" 
-                className={isCollapsed ? "w-8 h-auto" : "h-[50px] w-auto"} 
-              />
+        <SidebarMenuButton
+          size="lg"
+          onClick={() => {
+            if (location.pathname === "/dashboard") {
+              navigate('/');
+            } else {
+              navigate('/dashboard');
+            }
+          }}
+          className={`data-[state=open]:bg-sidebar-accent hover:bg-transparent cursor-pointer data-[state=open]:text-sidebar-accent-foreground ${isCollapsed ? 'justify-start' : 'justify-center my-3'}`}
+        >
+          <img
+            src={AppLogo}
+            alt="logo"
+            className={isCollapsed ? "w-8 h-auto" : "h-[50px] w-auto"}
+          />
 
-            </SidebarMenuButton>
+        </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
   )

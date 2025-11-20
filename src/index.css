@@ -81,9 +81,9 @@
   font-weight: 400;
   --radius: 0.625rem;
   --background: #fcfdfe;
-  --foreground: #0c0c0c;
-  --card: #f8f8f8;
-  --card-foreground: #000000;
+  --foreground: #1f2937;
+  --card: #fcfdfe;
+  --card-foreground: #1f2937;
   --popover: #ffffff;
   --popover-foreground: #000000;
   --primary: #0387d9;

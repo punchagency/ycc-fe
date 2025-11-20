@@ -2,12 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import CategoryApi from '../api/services/category';
 import type { CategoryInput } from '../types/category.type';
 
-export const useCategories = () => {
+export const useCategories = ({type, isApproved}:{type?: 'service' | 'product' | null, isApproved?: boolean}) => {
   const queryClient = useQueryClient();
 
   const categoriesQuery = useQuery({
-    queryKey: ['categories'],
-    queryFn: CategoryApi.getCategories,
+    queryKey: ['categories', type, isApproved],
+    queryFn: () => CategoryApi.getCategories({ type, isApproved }),
   });
 
   const createCategoryMutation = useMutation({
