@@ -71,7 +71,7 @@ const LandingPageBanner: React.FC<LandingPageBannerProps> = ({
         <div className="flex flex-col w-full gap-3 md:gap-3.5">
           <h1
             className="text-white font-semibold uppercase tracking-tight
-            font-['Plus_Jakarta_Sans'] text-[32px] sm:text-[38px] md:text-[42px] lg:text-[50px]
+             text-[32px] sm:text-[38px] md:text-[42px] lg:text-[50px]
             leading-[40px] sm:leading-[46px] md:leading-[52px] lg:leading-[60px]"
           >
             {header}

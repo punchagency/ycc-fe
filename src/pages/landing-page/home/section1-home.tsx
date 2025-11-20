@@ -24,7 +24,7 @@ const Section1Home: React.FC = () => {
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-[#131313] font-['Plus_Jakarta_Sans'] font-medium text-[28px] leading-[34px] sm:text-4xl sm:leading-[42px] md:text-[46px] md:leading-[51px] tracking-tight">
+            <h1 className="text-[#131313]  font-medium text-[28px] leading-[34px] sm:text-4xl sm:leading-[42px] md:text-[46px] md:leading-[51px] tracking-tight">
               Meet Your AI Assistant for All Things Yachting
             </h1>
 

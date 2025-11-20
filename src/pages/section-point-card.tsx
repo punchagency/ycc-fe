@@ -46,7 +46,7 @@ const SectionPointCard: React.FC<SectionPointCardProps> = ({
         </div>
 
         {/* Title */}
-        <h3 className="text-2xl md:text-3xl font-medium text-[#131313] font-['Plus_Jakarta_Sans'] 
+        <h3 className="text-2xl md:text-3xl font-medium text-[#131313]  
                        leading-tight tracking-wide pb-3 border-b border-[#02214B]/35">
           {title}
         </h3>

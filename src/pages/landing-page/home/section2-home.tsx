@@ -79,7 +79,7 @@ const Section2Home: React.FC = () => {
             </span>
           </div>
 
-          <h2 className="text-[#131313] font-['Plus_Jakarta_Sans'] font-medium text-[22px] leading-[28px] sm:text-[28px] sm:leading-[34px] md:text-4xl md:leading-[42px] lg:text-[46px] lg:leading-[51px] tracking-tight text-center">
+          <h2 className="text-[#131313]  font-medium text-[22px] leading-[28px] sm:text-[28px] sm:leading-[34px] md:text-4xl md:leading-[42px] lg:text-[46px] lg:leading-[51px] tracking-tight text-center">
             Explore Resources For Every Department
           </h2>
         </div>
@@ -100,7 +100,7 @@ const Section2Home: React.FC = () => {
 
                   {/* Content */}
                   <div>
-                    <h3 className="text-[#131313] font-['Plus_Jakarta_Sans'] font-medium text-[30px] leading-[36.6px] tracking-[0.01em]">
+                    <h3 className="text-[#131313]  font-medium text-[30px] leading-[36.6px] tracking-[0.01em]">
                       {item.title}
                     </h3>
                     <p className="text-[#373737] font-['Inter'] font-normal text-lg leading-[26.55px] mt-[10px]">
