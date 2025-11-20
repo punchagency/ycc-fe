@@ -122,7 +122,7 @@ const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
     const getDashboardLink = () => {
       switch (user?.role) {
         case "admin":
-          return "/category"; // admin has multiple, but default to category or dashboard
+          return "/dashboard"; // admin has multiple, but default to category or dashboard
         case "manufacturer":
         case "distributor":
         case "user":
