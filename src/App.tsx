@@ -84,15 +84,9 @@ const App: React.FC = () => {
               <Route path='/login' element={<SignInPage />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/get-started' element={<RegisterPage />} />
-            </Route>
-    
+            </Route>    
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<UserDashboard />} />
-            </Route>
-
             {/* Authenticated routes with sidebar layout */}
             {/* Authenticated routes based on user role */}
             {isAuthenticated && user?.role === 'user' && (
