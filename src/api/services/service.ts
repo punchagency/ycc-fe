@@ -1,6 +1,6 @@
 import api from "../client";
 import API_ENDPOINTS from "../../constants/api_endpoints";
-import type { IServiceInput } from "@/types/service.type";
+import type { BulkServiceInput, IServiceInput } from "@/types/service.type";
 
 
 
@@ -43,4 +43,8 @@ export const ServiceApi = {
         api.get(API_ENDPOINTS.service.getServicesByBusiness, { params: data }),
     getService: (id: string) =>
         api.get(API_ENDPOINTS.service.getService.replace(':id', id)),
+    uploadBulkServices: (data: BulkServiceInput) =>
+        api.post(API_ENDPOINTS.service.uploadBulkServices, data, {
+            headers: { 'Content-Type': 'application/json' }
+        })
 };
