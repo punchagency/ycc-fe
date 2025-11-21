@@ -28,6 +28,14 @@ const API_ENDPOINTS = {
         updateService: '/api/v2/service/:id',
         deleteService: '/api/v2/service/:id',
         uploadBulkServices: '/api/v2/service/bulk-upload',
+    },
+    product: {
+        createProduct: '/api/v2/product',
+        getProductsByBusiness: '/api/v2/product/business',
+        getProduct: '/api/v2/product/:id',
+        updateProduct: '/api/v2/product/:id',
+        deleteProduct: '/api/v2/product/:id',
+        uploadBulkProducts: '/api/v2/product/bulk-upload',
     }
 };
 

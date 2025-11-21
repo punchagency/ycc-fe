@@ -34,6 +34,7 @@ const getRoleBasedMenuItems = (role: string) => {
     distributor: [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
       { title: "Service Management", url: "/services", icon: Wrench },
+      { title: "Product Management", url: "/products", icon: Wrench },
       { title: "Inventory Management", url: "/inventory", icon: Package },
       { title: "Bookings", url: "/bookings", icon: Calendar },
       { title: "Orders", url: "/orders", icon: ShoppingCart },
