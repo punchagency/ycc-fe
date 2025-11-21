@@ -30,6 +30,13 @@ const API_ENDPOINTS = {
         deleteService: '/api/v2/service/:id',
         uploadBulkServices: '/api/v2/service/bulk-upload',
     },
+    document: {
+        uploadDocument: '/api/v2/document/upload',
+        getDocumentsByCategory: '/api/v2/document/category/:category',
+        deleteDocument: '/api/v2/document/:id',
+        getDownloadURL: '/api/v2/document/:id/download',
+        getDocumentCount: '/api/v2/document/counts'
+    },
     booking: {
         createBooking: '/api/v2/booking',
         getBookings: '/api/v2/booking',
