@@ -12,14 +12,6 @@ interface UpdateProfileData {
   address?: string;
 }
 
-interface UpdateDistributorProfileData {
-  businessName?: string;
-  businessEmail?: string;
-  businessPhone?: string;
-  website?: string;
-  address?: any;
-}
-
 interface ChangePasswordData {
   oldPassword: string;
   newPassword: string;
@@ -46,15 +38,21 @@ export const useProfile = () => {
   });
 
   const updateDistributorProfileMutation = useMutation({
-    mutationFn: (data: UpdateDistributorProfileData) => AuthApi.updateDistributorProfile(data),
+    mutationFn: AuthApi.updateDistributorProfile,
     onSuccess: (response) => {
       const updatedUser = response.data.data.user;
+      const updatedBusiness = response.data.data.business;
       
-      // Update Redux store with new user data
+      // Update Redux store
       patchUser(updatedUser);
       
       // Update session storage
       Session.set('user', updatedUser);
+      
+      // Store business information
+      if (updatedBusiness) {
+        Session.set('business', updatedBusiness);
+      }
       
       // Invalidate profile query to refetch
       queryClient.invalidateQueries({ queryKey: ['profile'] });

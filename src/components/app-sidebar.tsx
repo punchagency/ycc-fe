@@ -27,7 +27,17 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { useReduxUser } from "@/hooks/useReduxUser"
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const getRoleBasedMenuItems = (role: string) => {
   const menuItems = {
@@ -47,9 +57,9 @@ const getRoleBasedMenuItems = (role: string) => {
       { title: "Dashboard", url: "/crew/dashboard", icon: LayoutDashboard },
       { title: "Document Management", url: "/crew/documents", icon: FileText },
       { title: "Calendar", url: "/crew/calendar", icon: Calendar },
-      { title: "Financial Management", url: "/crew/finance", icon: DollarSign },
       { title: "Bookings", url: "/crew/bookings", icon: Calendar },
       { title: "Orders", url: "/crew/orders", icon: ShoppingCart },
+      { title: "Financial Management", url: "/crew/finance", icon: DollarSign },
       { title: "Notifications", url: "/crew/notifications", icon: Bell },
       { title: "Reports", url: "/crew/reports", icon: BarChart3 },
       { title: "Settings", url: "/crew/settings", icon: Settings },
@@ -93,6 +103,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useReduxUser();
   const userRole = user?.role || "user";
   const menuItems = getRoleBasedMenuItems(userRole);
+  const [showLogoutDialog, setShowLogoutDialog] = React.useState(false);
+  const navigate = useNavigate();
   
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -104,8 +116,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         {/* <NavUser user={{ name: user?.firstName || "Codre", email: user?.email || "codre@gmail.com", avatar: user?.profilePicture || ""}} /> */}
-        <Link
-          to="/logout"
+        <button
+          onClick={() => setShowLogoutDialog(true)}
           className="w-full bg-[#ffe5e5] text-[#ff4b4b] border-2 border-[#ffb3b3] rounded-lg font-inter font-bold text-base py-2 flex items-center justify-center gap-2 transition duration-200 cursor-pointer outline-none hover:bg-[#ffd6d6]"
         >
           <img
@@ -114,8 +126,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             width={18}
             height={18}
           />
-            Logout
-        </Link>
+          Logout
+        </button>
+        <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirm Logout</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to log out of your account?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction className="bg-destructive hover:bg-destructive/80" onClick={() => navigate("/logout")}>
+                Logout
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
