@@ -3,38 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import * as Sentry from '@sentry/react';
 import { Toaster } from "./components/ui/sonner";
 
-// Lazy imports from origin/main
-const LandingPageLayout = lazy(() => import("./layout/landing-page-layout"));
-const DashboardLayout = lazy(() => import("./layout/dashboard-layout"));
-const SignInPage = lazy(() => import("./pages/auth/sign-in"));
-const RegisterPage = lazy(() => import("./pages/auth/register"));
-const Logout = lazy(() => import("./pages/auth/logout"));
-
-const Home = lazy(() => import("./pages/landing-page/home/home"));
-const VendorAndServices = lazy(() => import("./pages/landing-page/vendorservices/vendor-services"));
-const AboutUs = lazy(() => import("./pages/landing-page/about/about-us"));
-const ResourceCenter = lazy(() => import("./pages/landing-page/resource-center/resource-center"));
-const ContactUs = lazy(() => import("./pages/landing-page/contact/contact-us"));
-
-const CrewLandingPage = lazy(() => import("./pages/landing-page/crew/crew"));
-const EngineeringLandingPage = lazy(() => import("./pages/landing-page/engineering/engineering"));
-const InteriorLandingPage = lazy(() => import("./pages/landing-page/interior/interior"));
-const ExteriorLandingPage = lazy(() => import("./pages/landing-page/exterior/exterior"));
-const CaptainLandingPage = lazy(() => import("./pages/landing-page/captain/captain"));
-const ChefGalleryLandingPage = lazy(() => import("./pages/landing-page/chef-gallery/chef-gallery"));
-const TermsAndConditions = lazy(() => import("./pages/terms-and-conditions/terms-and-conditions"));
-const PrivacyPolicy = lazy(() => import("./pages/privacy-policy/privacy-policy"));
-
-const UserDashboard = lazy(() => import("./pages/user/UserDashboard"));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
-const DistributorDashboard = lazy(() => import("./pages/distributor/DistributorDashboard"));
-const ManufacturerDashboard = lazy(() => import("./pages/manufacturer/ManufacturerDashboard"));
-
-const Profile = lazy(() => import("./pages/dashboard/profile/Profile"));
-
-const Category = lazy(() => import("./pages/admin/category/Category"));
-const DistributorServices = lazy(() => import("./pages/distributor/service/Service"));
-
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { setSentryUser } from "./config/sentry";
 import { useReduxAuth } from "./hooks/useReduxAuth";

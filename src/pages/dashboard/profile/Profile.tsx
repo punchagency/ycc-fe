@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-
 const ProfilePage: React.FC = () => {
   const { user } = useReduxAuth();
 
@@ -77,23 +76,25 @@ const ProfilePage: React.FC = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch("https://restcountries.com/v3.1/all");
-        const data = await response.json();
+        const response = await fetch("https://countriesnow.space/api/v0.1/countries");
+        const result = await response.json();
 
-        const countryNames = data
-          .map((country: any) => country.name.common)
-          .filter((name: string) => name && name.trim() !== "") // filter out empty names
-          .sort(); // sort alphabetically
+        // Extract country names from result.data
+        const countryNames = result.data
+          .map((item: { country: string }) => item.country)
+          .filter((name: string) => name && name.trim() !== "")
+          .sort();
 
         setCountries(countryNames);
       } catch (error) {
         console.error("Error fetching countries:", error);
-        setCountries([]); // set empty array on error
+        setCountries([]);
       }
     };
 
     fetchCountries();
   }, []);
+
 
   return (
     <div className="mx-auto">
