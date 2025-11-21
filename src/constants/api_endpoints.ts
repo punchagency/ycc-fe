@@ -24,6 +24,7 @@ const API_ENDPOINTS = {
     service: {
         createService: '/api/v2/service',
         getServicesByBusiness: '/api/v2/service/business',
+        getCrewServices: '/api/v2/service/crew-services',
         getService: '/api/v2/service/:id',
         updateService: '/api/v2/service/:id',
         deleteService: '/api/v2/service/:id',
@@ -35,6 +36,13 @@ const API_ENDPOINTS = {
         deleteDocument: '/api/v2/document/:id',
         getDownloadURL: '/api/v2/document/:id/download',
         getDocumentCount: '/api/v2/document/counts'
+    },
+    booking: {
+        createBooking: '/api/v2/booking',
+        getBookings: '/api/v2/booking',
+        getBookingById: '/api/v2/booking/:id',
+        updateBookingStatus: '/api/v2/booking/:id/status',
+        confirmBooking: '/api/v2/booking/confirm/:token'
     }
 };
 

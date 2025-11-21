@@ -1,38 +1,37 @@
 import React, { useState, useEffect, useRef } from "react";
 import profileUpload from "../../../assets/images/profile-upload.png";
 import { useReduxAuth } from "../../../hooks/useReduxAuth";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import countries from "react-phone-number-input/locale/en.json";
-// import metadata from "react-phone-number-input/metadata.min.json";
-import { Edit2, X } from "lucide-react";
+import { Edit2, X, Upload, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
-
 const ProfilePage: React.FC = () => {
   const { user } = useReduxAuth();
+  const { updateProfile } = useAuth();
 
   // Profile picture states
   const [showPicDrawer, setShowPicDrawer] = useState(false);
   const [showPicPreview, setShowPicPreview] = useState(false);
-  const [picLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const picRef = useRef<HTMLImageElement>(null);
+
+  // Countries for nationality dropdown
   const [countries, setCountries] = useState<string[]>([]);
 
-  const { updateProfile, profile } = useAuth();
-
-  // Edit profile modal state
+  // Edit profile modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     firstName: user?.firstName || "",
@@ -46,129 +45,204 @@ const ProfilePage: React.FC = () => {
       city: user?.address?.city || "",
       state: user?.address?.state || "",
       country: user?.address?.country || "",
-    }
-
+    },
   });
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return <div className="text-center py-10">Loading...</div>;
 
-  const handleChangePicture = () => fileInputRef.current?.click();
-  const handleViewPicture = () => setShowPicPreview(true);
-  const handleRemovePicture = () => console.log("Remove picture");
-  const handleFileChange = () => console.log("File changed");
-
-  const handleEditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      await updateProfile.mutateAsync(editForm);
-      
-      toast.success("Profile updated successfully!");
-      setIsEditModalOpen(false); // Only close on success
-    } catch (error: any) {
-      console.error("Update failed:", error);
-      toast.error(
-        error?.response?.data?.message || "Failed to update profile. Please try again."
-      );
-      // Don't close modal on error!
-    }
-  };
-
+  // Fetch countries on mount
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch("https://restcountries.com/v3.1/all");
-        const data = await response.json();
-
-        const countryNames = data
-          .map((country: any) => country.name.common)
-          .filter((name: string) => name && name.trim() !== "") // filter out empty names
-          .sort(); // sort alphabetically
-
+        const response = await fetch("https://countriesnow.space/api/v0.1/countries");
+        const result = await response.json();
+        const countryNames = result.data
+          .map((item: { country: string }) => item.country)
+          .filter((name: string) => name && name.trim())
+          .sort();
         setCountries(countryNames);
       } catch (error) {
         console.error("Error fetching countries:", error);
-        setCountries([]); // set empty array on error
+        toast.error("Failed to load countries list");
       }
     };
-
     fetchCountries();
   }, []);
 
+  // Handlers
+  const openPictureDrawer = () => setShowPicDrawer(true);
+  const closePictureDrawer = () => {
+    setShowPicDrawer(false);
+    setPreviewUrl(null);
+  };
+
+  const handleChangePicture = () => fileInputRef.current?.click();
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Image must be under 10MB");
+      return;
+    }
+
+    // Preview
+    const reader = new FileReader();
+    reader.onload = () => setPreviewUrl(reader.result as string);
+    reader.readAsDataURL(file);
+
+    setIsUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("profilePicture", file);
+
+      await updateProfile.mutateAsync(formData);
+
+      toast.success("Profile picture updated successfully!");
+      closePictureDrawer();
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to upload image");
+      setPreviewUrl(null);
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleRemovePicture = async () => {
+    if (!user?.profilePicture) {
+      toast.info("No profile picture to remove");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to remove your profile picture?")) return;
+
+    try {
+      await updateProfile.mutateAsync({ profilePicture: null });
+      toast.success("Profile picture removed");
+      closePictureDrawer();
+    } catch (error: any) {
+      toast.error("Failed to remove profile picture");
+    }
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await updateProfile.mutateAsync(editForm);
+      toast.success("Profile updated successfully!");
+      setIsEditModalOpen(false);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to update profile");
+    }
+  };
+
+  const openEditModal = () => {
+    setEditForm({
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      phone: user.phone || "",
+      nationality: user.nationality || "",
+      profilePicture: user.profilePicture || "",
+      address: {
+        street: user.address?.street || "",
+        zipcode: user.address?.zipcode || "",
+        city: user.address?.city || "",
+        state: user.address?.state || "",
+        country: user.address?.country || "",
+      },
+    });
+    setIsEditModalOpen(true);
+  };
+
   return (
-    <div className="mx-auto">
+    <div className="mx-auto max-w-6xl p-6">
       {/* Profile Picture Drawer */}
       {showPicDrawer && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setShowPicDrawer(false)}
-        >
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={closePictureDrawer}>
           <div
-            className="fixed right-0 top-0 w-80 h-screen bg-white shadow-lg p-6 overflow-y-auto"
+            className="fixed right-0 top-0 w-96 h-full bg-white shadow-2xl p-8 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold">Profile Picture</h3>
-              <Button
-                variant={"ghost"}
-                onClick={() => setShowPicDrawer(false)}
-                className="text-muted-foreground hover:text-gray-700 text-2xl"
-              >
-                <X />
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="text-2xl font-bold">Update Profile Picture</h3>
+              <Button variant="ghost" size="icon" onClick={closePictureDrawer}>
+                <X className="h-6 w-6" />
               </Button>
             </div>
 
-            <Button
-              variant={"secondary"}
-              onClick={handleViewPicture}
-              className="w-full mb-3 px-4 py-3 text-left"
-            >
-              View Current Picture
-            </Button>
-            <Button
-              onClick={handleChangePicture}
-              disabled={picLoading}
-              className="w-full mb-3 px-4 py-3 text-left"
-            >
-              Upload New Picture
-            </Button>
-            <Input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-            />
-            
-            <Button
-              variant={"destructive"}
-              onClick={handleRemovePicture}
-              disabled={picLoading}
-              className="w-full px-4 py-3 text-left rounded-lg transition disabled:opacity-50 flex items-center gap-3"
-            >
-              Remove Picture
-            </Button>
+            {/* Current Picture */}
+            <div className="mb-8 text-center">
+              <img
+                src={previewUrl || user.profilePicture || profileUpload}
+                alt="Current"
+                className="w-48 h-48 rounded-full object-cover mx-auto border-4 border-gray-200"
+              />
+              <p className="mt-4 text-sm text-muted-foreground">
+                {previewUrl ? "New picture preview" : "Current profile picture"}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <Button
+                onClick={handleChangePicture}
+                disabled={isUploading}
+                className="w-full"
+                size="lg"
+              >
+                <Upload className="mr-2 h-5 w-5" />
+                {isUploading ? "Uploading..." : "Upload New Picture"}
+              </Button>
+
+              <Input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                disabled={isUploading}
+              />
+
+              <Button
+                variant="destructive"
+                onClick={handleRemovePicture}
+                disabled={isUploading || !user.profilePicture}
+                className="w-full"
+                size="lg"
+              >
+                <Trash2 className="mr-2 h-5 w-5" />
+                Remove Picture
+              </Button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Profile Picture Preview Modal */}
+      {/* Fullscreen Preview */}
       {showPicPreview && (
         <div
-          onClick={() => setShowPicPreview(false)}
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center cursor-zoom-out"
+          onClick={() => setShowPicPreview(false)}
         >
           <div onClick={(e) => e.stopPropagation()} className="relative">
             <img
               src={user.profilePicture || profileUpload}
-              alt="Profile Preview"
-              className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl"
+              alt="Full preview"
+              className="max-w-[90vw] max-h-[90vh] rounded-xl"
             />
             <Button
+              size="icon"
+              className="absolute top-4 right-4 bg-black/50 hover:bg-black/70"
               onClick={() => setShowPicPreview(false)}
-              className="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full hover:bg-black/70 transition"
             >
-              <X />
+              <X className="h-6 w-6" />
             </Button>
           </div>
         </div>
@@ -186,7 +260,7 @@ const ProfilePage: React.FC = () => {
               <Button
                 variant={"ghost"}
                 onClick={() => setIsEditModalOpen(false)}
-                className="text-muted-foreground hover:text-gray-700 text-2xl"
+                className="text-muted-foreground hover:text-gray-700 text-2xl cursor-pointer"
               >
                 <X />
               </Button>
@@ -270,14 +344,13 @@ const ProfilePage: React.FC = () => {
                   type="button"
                   variant={"outline"}
                   onClick={() => setIsEditModalOpen(false)}
-                  className=""
+                  className="cursor-pointer"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-
-                  className=""
+                  className="cursor-pointer"
                 >
                   Save Changes
                 </Button>
@@ -287,98 +360,66 @@ const ProfilePage: React.FC = () => {
         </div>
       )}
 
-      {/* Profile Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-6">
+      {/* Main Profile Header */}
+      <div className="flex items-center justify-between mb-10">
+        <div className="flex items-center gap-8">
           <img
-            ref={picRef}
             src={user.profilePicture || profileUpload}
             alt="Profile"
-            onClick={() => setShowPicDrawer(true)}
-            className="w-28 h-28 rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-105 transition-transform duration-200 object-cover"
+            onClick={() => setShowPicPreview(true)}
+            className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl cursor-pointer hover:scale-105 transition-transform"
           />
           <div>
-            <h1 className="text-3xl font-semibold">
+            <h1 className="text-4xl font-bold">
               {user.firstName} {user.lastName}
             </h1>
-            <p className="text-muted-foreground text-lg">{user.email}</p>
-            <Badge className=" text-sm font-semibold rounded-full capitalize">
-              {user.role}
-            </Badge>
+            <p className="text-xl text-muted-foreground mt-1">{user.email}</p>
+            <Badge className="mt-3 text-lg px-4 py-1 capitalize">{user.role}</Badge>
           </div>
         </div>
 
-        {/* Edit Profile Button */}
-        <Button
-          onClick={() => {
-            setEditForm({
-              firstName: user.firstName || "",
-              lastName: user.lastName || "",
-              phone: user.phone || "",
-              nationality: user.nationality || "",
-              profilePicture: user.profilePicture || "",
-              address: {
-                street: user.address?.street || "",
-                zipcode: user.address?.zipcode || "",
-                city: user.address?.city || "",
-                state: user.address?.state || "",
-                country: user.address?.country || "",
-              },
-            });
-            setIsEditModalOpen(true);
-          }}
-          className="cursor-pointer"
-        >
-          <Edit2 />
-          Edit Profile
-        </Button>
+        <div className="flex gap-4">
+          <Button size="lg" onClick={openPictureDrawer}>
+            <Upload className="mr-2 h-5 w-5" />
+            Change Picture
+          </Button>
+          <Button size="lg" onClick={openEditModal}>
+            <Edit2 className="mr-2 h-5 w-5" />
+            Edit Profile
+          </Button>
+        </div>
       </div>
 
-      {/* Personal Information Section */}
-      <Card className="py-3">
-        <CardHeader className="px-3">
-          <CardTitle className="text-xl font-semibold ">
-            Personal Information
-          </CardTitle>
+      {/* Personal Information Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Personal Information</CardTitle>
         </CardHeader>
-
-        <CardContent className="grid grid-cols-1 px-3 md:grid-cols-2 gap-8 text-lg ">
+        <CardContent className="grid md:grid-cols-2 gap-8 text-lg">
           <div>
-            <p className="text-muted-foreground text-sm font-medium">Full Name</p>
-            <p className=" font-semibold mt-1">
-              {user.firstName} {user.lastName}
-            </p>
+            <p className="text-muted-foreground text-sm">Full Name</p>
+            <p className="font-semibold text-xl mt-1">{user.firstName} {user.lastName}</p>
           </div>
-
           <div>
-            <p className="text-muted-foreground text-sm font-medium">Nationality</p>
-            <p className=" font-semibold mt-1">
-              {user.nationality || "Not set"}
-            </p>
+            <p className="text-muted-foreground text-sm">Nationality</p>
+            <p className="font-semibold text-xl mt-1">{user.nationality || "Not set"}</p>
           </div>
-
           <div>
-            <p className="text-muted-foreground text-sm font-medium">Email Address</p>
-            <p className=" font-semibold mt-1">{user.email}</p>
+            <p className="text-muted-foreground text-sm">Email Address</p>
+            <p className="font-semibold text-xl mt-1">{user.email}</p>
           </div>
-
           <div>
-            <p className="text-muted-foreground text-sm font-medium">Phone Number</p>
-            <p className=" font-semibold mt-1">
-              {user.phone || "Not set"}
-            </p>
+            <p className="text-muted-foreground text-sm">Phone Number</p>
+            <p className="font-semibold text-xl mt-1">{user.phone || "Not set"}</p>
           </div>
         </CardContent>
-
-        <CardFooter className="border-t border-gray-200 pt-3 px-3">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <strong>Reply-To Email:</strong> This will be used for calendar invites.
-            Default is your account email:
-            <span className="font-medium text-gray-700"> {user.email}</span>
+        <CardFooter className="bg-muted/50">
+          <p className="text-sm">
+            <strong>Reply-To Email:</strong> Calendar invites will be sent from{" "}
+            <span className="font-medium">{user.email}</span>
           </p>
         </CardFooter>
       </Card>
-
     </div>
   );
 };
