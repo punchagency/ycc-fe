@@ -9,6 +9,10 @@ const UserDashboard = lazy(() => import('../pages/user/UserDashboard'));
 const Settings = lazy(() => import('../pages/crew/Settings'));
 const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
 
+// Lazy load booking pages
+const Bookings = lazy(() => import('../pages/crew/bookings/Bookings'));
+const NewCreateBooking = lazy(() => import('../pages/crew/bookings/NewCreateBooking'));
+
 export const crewRoutes: RouteObject[] = [
   {
     element: <DashboardLayout />,
@@ -22,8 +26,16 @@ export const crewRoutes: RouteObject[] = [
         element: <Settings />,
       },
       {
+        path: '/crew/bookings',
+        element: <Bookings />,
+      },
+      {
+        path: '/crew/booking/new-create-booking',
+        element: <NewCreateBooking />,
+      },
+      {
         path: '/profile',
-        element: <Profile />,
+        element: <Profile />
       },
       // Add more crew-specific routes here as your application grows
     ],

@@ -41,6 +41,16 @@ export const ServiceApi = {
         api.delete(API_ENDPOINTS.service.deleteService.replace(':id', id)),
     getServicesByBusiness: (data: { page: number, limit: number}) =>
         api.get(API_ENDPOINTS.service.getServicesByBusiness, { params: data }),
+    getCrewServices: (params: { 
+        search?: string;
+        category?: string;
+        minPrice?: number;
+        maxPrice?: number;
+        page?: number;
+        limit?: number;
+        sortBy?: string;
+    }) =>
+        api.get(API_ENDPOINTS.service.getCrewServices, { params }),
     getService: (id: string) =>
         api.get(API_ENDPOINTS.service.getService.replace(':id', id)),
     uploadBulkServices: (data: BulkServiceInput) =>
