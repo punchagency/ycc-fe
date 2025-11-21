@@ -26,7 +26,8 @@ const API_ENDPOINTS = {
         getServicesByBusiness: '/api/v2/service/business',
         getService: '/api/v2/service/:id',
         updateService: '/api/v2/service/:id',
-        deleteService: '/api/v2/service/:id'
+        deleteService: '/api/v2/service/:id',
+        uploadBulkServices: '/api/v2/service/bulk-upload',
     }
 };
 

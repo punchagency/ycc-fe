@@ -26,7 +26,6 @@ export default function DashboardLayout() {
               className="mr-2 data-[orientation=vertical]:h-4"
             />
 
-
             <div className="relative">
               <Input
                 type="text"
@@ -41,7 +40,6 @@ export default function DashboardLayout() {
 
             <div className="relative p-2 rounded-full hover:bg-gray-200 transition">
               <BellIcon className="w-6 h-6 text-sky-600" />
-
               <span className="absolute top-[2px] right-[5px] inline-block w-2 h-2 bg-red-500 rounded-full" />
             </div>
 

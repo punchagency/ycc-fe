@@ -21,3 +21,14 @@ export interface IServiceInput {
     categoryId?: string;
     isQuotable?: boolean;
 }
+
+export interface BulkServiceInput {
+    userId: string;
+    services: {
+        name: string;
+        description?: string;
+        price: number;
+        categoryName: string;
+        isQuotable?: boolean;
+    }[]
+}

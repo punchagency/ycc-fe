@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, lazy } from "react";
+import React, { useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import * as Sentry from '@sentry/react';
 import { Toaster } from "./components/ui/sonner";
@@ -10,13 +10,11 @@ import { useAuth } from "./hooks/useAuth";
 import { Loading } from "./components/ui/Loading";
 import { isLoggedIn } from "./utils/IsLoggedIn";
 
-// Route definition files (clean system)
 import { publicRoutes } from "./routes/publicRoutes";
 import { crewRoutes } from "./routes/crewRoutes";
 import { distributorRoutes } from "./routes/distributorRoutes";
 import { manufacturerRoutes } from "./routes/manufacturerRoutes";
 import { adminRoutes } from "./routes/adminRoutes";
-import { useReduxUser } from "./hooks/useReduxUser";
 
 const SentryRoutes = Sentry.withSentryReactRouterV7Routing(Routes);
 
@@ -25,7 +23,6 @@ const App: React.FC = () => {
 
   const { user } = useReduxAuth();
   const isAuthenticated = isLoggedIn();
-  const reduxUser = useReduxUser();
 
   useEffect(() => {
     if (import.meta.env.PROD && user?._id && user?.email) {

@@ -15,9 +15,11 @@ import ConfirmDelete from '@/components/confirm-delete'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination'
 import { toast } from 'sonner';
 import APIErrorResponse from '@/utils/APIErrorResponse';
+import { useNavigate } from 'react-router-dom';
 
 
 const Service: React.FC = () => {
+    const navigate = useNavigate();
     const [services, setServices] = React.useState<IService[]>([]);
     const [categories, setCategories] = React.useState<ICategory[]>([]);
     const [pagination, setPagination] = React.useState({
@@ -99,7 +101,7 @@ const Service: React.FC = () => {
                     <p className="text-muted-foreground">Manage your services to get booked.</p>
                 </div>
                 <div className='flex gap-3'>
-                    <Button onClick={() => { }}
+                    <Button onClick={() => navigate('/services/bulk-upload')}
                         variant='outline'
                         className='border-primary border-2 text-primary hover:bg-primary hover:text-white'
                     >

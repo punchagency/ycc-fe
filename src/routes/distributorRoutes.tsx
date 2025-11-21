@@ -8,6 +8,8 @@ const DashboardLayout = lazy(() => import('../layout/dashboard-layout'));
 const DistributorDashboard = lazy(() => import('../pages/distributor/DistributorDashboard'));
 const Settings = lazy(() => import('../pages/distributor/Settings'));
 const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
+const Services = lazy(() => import('../pages/distributor/service/Service'));
+const UploadBulkServices = lazy(() => import('../pages/distributor/service/uploadBulkServices'));
 
 export const distributorRoutes: RouteObject[] = [
   {
@@ -16,6 +18,14 @@ export const distributorRoutes: RouteObject[] = [
       {
         path: '/dashboard',
         element: <DistributorDashboard />,
+      },
+      {
+        path: '/services',
+        element: <Services />,
+      },
+      {
+        path: '/services/bulk-upload',
+        element: <UploadBulkServices />,
       },
       {
         path: '/distributor/settings',
