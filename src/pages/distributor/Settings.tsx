@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useProfile } from '../../hooks/useProfile';
 import { useReduxUser } from '../../hooks/useReduxUser';
+import Session from '../../utils/Session';
 import { toast } from 'sonner';
 import { Save, X, Edit, CheckCircle } from 'lucide-react';
 
@@ -26,7 +27,28 @@ const Settings: React.FC = () => {
   const [originalData, setOriginalData] = useState(formData);
 
   useEffect(() => {
-    if (user) {
+    // Get business data from session storage
+    const businessData = Session.get('business');
+    
+    if (businessData) {
+      // Populate from business model (primary source)
+      const userData = {
+        businessName: businessData.businessName || '',
+        businessEmail: businessData.email || '',
+        businessPhone: businessData.phone || '',
+        website: businessData.website || '',
+        address: businessData.address || {
+          street: '',
+          zipcode: '',
+          city: '',
+          state: '',
+          country: '',
+        },
+      };
+      setFormData(userData);
+      setOriginalData(userData);
+    } else if (user) {
+      // Fallback to user model if business data not available
       const userData = {
         businessName: user.businessName || '',
         businessEmail: user.businessEmail || '',

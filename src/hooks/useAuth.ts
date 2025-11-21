@@ -46,6 +46,14 @@ export const useAuth = () => {
       dispatch(setUser(profileQuery.data.user));
       Session.set('user', profileQuery.data.user);
 
+      console.log(profileQuery.data.business, 'this is some busmess');
+      
+
+      // Store business information for distributors/manufacturers
+      if (profileQuery.data.business) {
+        Session.set('business', profileQuery.data.business);
+      }
+
       // Ensure auth state is set when profile is loaded
       const token = Session.getCookie('token');
       const refreshToken = Session.getCookie('refreshToken');
