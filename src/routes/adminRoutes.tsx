@@ -7,6 +7,7 @@ const DashboardLayout = lazy(() => import('../layout/dashboard-layout'));
 // Lazy load admin pages
 const AdminDashboard = lazy(() => import('../pages/admin/AdminDashboard'));
 const Category = lazy(() => import('../pages/admin/category/Category'));
+const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
 
 export const adminRoutes: RouteObject[] = [
   {
@@ -19,6 +20,10 @@ export const adminRoutes: RouteObject[] = [
       {
         path: '/category',
         element: <Category />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
       },
       // Add more admin-specific routes here as your application grows
     ],
